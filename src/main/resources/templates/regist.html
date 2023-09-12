@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>OTP Registration</title>
+</head>
+<body>
+<h1>OTP Registration</h1>
+
+<form th:action="@{/regist}" method="post">
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" required/>
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>
