@@ -1,5 +1,6 @@
 package com.shopping.electroshopping.config;
 
+import com.shopping.electroshopping.service.categoryService.CategoryServiceImpl;
 import com.shopping.electroshopping.service.userservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +32,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
+    @Bean
+    public CategoryServiceImpl categoryService() {
+        return new CategoryServiceImpl();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -49,15 +54,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         ,"/user/**"
                         ,"/regist"
                         ,"/verif"
+                        ,"/otpSignUp"
                 ).permitAll()
 //                .antMatchers("/").hasAnyRole("USER","ADMIN")
                 .antMatchers("/accessdenied").hasAnyRole("USER","ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
-
                 .and()
-
-
 
                 .formLogin()
                 .loginPage("/login")

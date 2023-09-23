@@ -74,4 +74,14 @@ public class AdminCategoryController {
      return "redirect:/admin/categoryList";
     }
 
+
+    @GetMapping("/categorySearch")
+    public String searchCategory(@RequestParam ("name")String name, Model model)
+    {
+        List<Category> list=categoryService.getCategoryByName(name);
+        model.addAttribute("listcategory",list);
+        return "/category/listcategory";
+    }
+
+
 }

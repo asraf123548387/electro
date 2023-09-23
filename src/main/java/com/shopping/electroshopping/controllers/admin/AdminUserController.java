@@ -30,7 +30,7 @@ public class AdminUserController {
     {
         List<User> customers=customerRepository.findAll();
         model.addAttribute("listUsers",customers);
-        return "listusers";
+        return "user/listusers";
     }
 
 
@@ -39,7 +39,7 @@ public class AdminUserController {
     {
         List<User> list=userService.getCustomerByName(email);
          model.addAttribute("listUsers",list);
-        return "listusers";
+        return "user/listusers";
     }
     @GetMapping ("blockUser/{id}")
     public String blockUser(@PathVariable Long id)
@@ -48,12 +48,7 @@ public class AdminUserController {
    return "redirect:/admin/listUsers";
 
     }
-//    @GetMapping("unblockUser/{id}")
-//    public ResponseEntity<String>unblockUser(@PathVariable Long id)
-//    {
-//        userService.unblockUser(id);
-//        return ResponseEntity.ok("user unblocked succesfully");
-//    }
+
     @GetMapping("unblockUser/{id}")
     public String unblockUser(@PathVariable Long id)
     {

@@ -17,13 +17,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed"
-              data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-              aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span> <span
-              class="icon-bar"></span> <span class="icon-bar"></span> <span
-              class="icon-bar"></span>
-      </button>
+
       <a class="navbar-brand" href="#" th:href="@{/admin/home}">back to dash board</a>
     </div>
   </div>
@@ -42,9 +36,9 @@
           to our awesome app!</div>
       </div>
 
-      <h1>Add products</h1>
+      <h1>Update products</h1>
 
-      <form th:action="@{/admin/updateProduct/{id}(id=${ProductId})}"  method="post" th:object="${product}">
+<form th:action="@{/admin/updateProduct/{id}(id=${pro})}" method="post" th:object="${product}">
         <div class="form-group">
           <label class="control-label" for="firstName"> Product Name </label>
           <input id="firstName" class="form-control" th:field="*{productName}"
@@ -56,7 +50,7 @@
         <div class="form-group">
           <label class="control-label" for="email"> price </label> <input
                 id="email" class="form-control" th:field="*{price}" required
-                autofocus="autofocus" type="number"/>
+                autofocus="autofocus" type="text"/>
         </div>
 
 
@@ -65,10 +59,20 @@
           <input id="description" class="form-control" th:field="*{description}"
                  required autofocus="autofocus" />
         </div>
-
+<!--  <div class="form-group">-->
+<!--    <label >Select Category</label>-->
+<!--    <select class="form-control" th:field="*{categoryId}" name="category">-->
+<!--      <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">-->
+<!--      </option>-->
+<!--    </select>-->
+<!--  </div>-->
         <div class="form-group">
-          <button type="submit" class="btn btn-success">Add Product</button>
+          <label for="image">Product Image</label>
+          <input id="image" class="form-control" type="text" name="image" th:field="*{imageName}" accept="image/*" required>
         </div>
+
+          <button type="submit" class="btn btn-success">EDIT PRODUCT</button>
+
       </form>
     </div>
   </div>

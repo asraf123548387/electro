@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserOtpController {
     @Autowired
     private OTPServive otpServive;
-//    @GetMapping("/regist")
-//    public String showRegistrationForm(Model model) {
-//        // You can add any additional model attributes needed for the registration form
-//        return "regist";
-//    }
+
 
     @PostMapping("/regist")
     public String registerUser(@RequestParam("phoneNumber") String phoneNumber) {
@@ -30,11 +26,6 @@ public class UserOtpController {
 //        return ResponseEntity.ok("OTP sent successfully.");
     }
 
-//    @GetMapping("/verif")
-//    public String showVerificationForm(Model model) {
-//        // You can add any additional model attributes needed for the verification form
-//        return "verif";
-//    }
 
     @PostMapping("/verif")
     public ResponseEntity<String> verifyOTP(@RequestParam("phoneNumber") String phoneNumber, @RequestParam("otp") String otp) {
@@ -44,4 +35,11 @@ public class UserOtpController {
             return ResponseEntity.badRequest().body("Invalid OTP.");
         }
     }
+    @GetMapping("/otpSignUp")
+    public String otpSignUP()
+    {
+        return "otpSignUp";
+    }
+
 }
+

@@ -10,8 +10,14 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
@@ -48,11 +54,15 @@ public class AdminProductController {
         return "/product/addProducts";
     }
     @PostMapping("/addProducts")
-    public String addProductstoDatabase(@ModelAttribute("product")ProductDto productDto)
+    public String addProductstoDatabase(@ModelAttribute("product")ProductDto productDto )
     {
+
+
         productService.addProduct(productDto);
         return "redirect:/admin/productList";
     }
+
+
     @GetMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable(value = "id") long id)
     {
@@ -60,20 +70,21 @@ public class AdminProductController {
         return "redirect:/admin/productList";
     }
     @GetMapping("/updateProduct/{id}")
-    public String updateProductForm(@PathVariable(value = "id")Long ProductId, Model model)
+    public String updateProductForm(@PathVariable(value = "id")long productId, Model model)
     {
-        Product product=productRepository.findById(ProductId)
-                .orElseThrow(()->new IllegalArgumentException("in valid product Id: "+ProductId));
-
+        Product product=productRepository.findById(productId)
+                .orElseThrow(()->new IllegalArgumentException("in valid product Id: "+productId));
+        model.addAttribute("categories",categoryRepository.findAll());
         model.addAttribute("product",product);
-        model.addAttribute("productID",ProductId);
+        model.addAttribute("pro",productId);
+        model.addAttribute("categories",categoryRepository.findAll());
 
         return "/product/updateProduct";
     }
     @PostMapping("/updateProduct/{id}")
-    public String updateProduct(@PathVariable(value="id") Long ProductId,@ModelAttribute("product") ProductDto productDto)
+    public String updateProduct(@PathVariable("id") Long productId,@ModelAttribute("product") ProductDto productDto)
     {
-        productService.editproduct(ProductId,productDto);
+        productService.editproduct(productId,productDto);
         return "redirect:/admin/productList";
     }
     @GetMapping("/productSearch")

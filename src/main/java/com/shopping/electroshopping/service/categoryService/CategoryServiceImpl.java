@@ -7,13 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 
 public class CategoryServiceImpl implements  CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl() {
         this.categoryRepository = categoryRepository;
     }
 
@@ -43,8 +45,13 @@ public class CategoryServiceImpl implements  CategoryService {
             category.setName(categoryDto.getName());
         }
        categoryRepository.save(category);
-    }
 
+
+    }
+public List<Category> getCategoryByName(String name)
+{
+    return categoryRepository.findByCategoryName(name);
+}
 
 
 

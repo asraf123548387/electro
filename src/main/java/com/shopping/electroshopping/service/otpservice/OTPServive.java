@@ -4,6 +4,7 @@ import java.util.Random;
 import com.shopping.electroshopping.model.user.User;
 import com.shopping.electroshopping.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,6 +13,8 @@ public class OTPServive {
     private UserRepository userRepository;
     @Autowired
     private TwilioSMSProvider twilioSMSProvider;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     private String generateRandomOTP() {
         // Generate a random 6-digit OTP
         Random random = new Random();
@@ -22,7 +25,7 @@ public class OTPServive {
     {
         String otpCode=generateRandomOTP();
         User user=userRepository.findByPhoneNumber(phoneNumber);
-        user.setOtp(otpCode);
+        user.setOtp(passwordEncoder.encode(otpCode));
         userRepository.save(user);
         twilioSMSProvider.sendSMS(phoneNumber," hi iam ashraf :your otp is:"+otpCode);
     }

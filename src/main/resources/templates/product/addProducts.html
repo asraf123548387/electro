@@ -39,6 +39,7 @@
             <h1 class="mb-4">Add Products</h1>
 
             <form th:action="@{/admin/addProducts}" method="post" th:object="${product}">
+<!--                <input type="hidden" th:field="*{id}" />-->
                 <div class="form-group">
                     <label for="productName">Product Name</label>
                     <input id="productName" class="form-control" th:field="*{productName}" required autofocus>
@@ -52,6 +53,10 @@
                 <div class="form-group">
                     <label for="description">Description</label>
                     <input id="description" class="form-control" th:field="*{description}" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">Product Image</label>
+                    <input id="image" value="./img/" class="form-control" type="text" name="image" th:field="*{imageName}" accept="image/*" required>
                 </div>
 
                 <div class="form-group">

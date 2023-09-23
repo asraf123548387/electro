@@ -1,11 +1,13 @@
 package com.shopping.electroshopping.model.user;
 
 
+import com.shopping.electroshopping.model.cart.Cart;
 import com.shopping.electroshopping.model.role.Role;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column (name="user_name")
-    private String UserName;
+    private String userName;
     @Column(name = "email")
     private String email;
     @Column (name="password")
@@ -30,15 +32,29 @@ public class User {
     private boolean isBlocked;
 
     private String otp;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<UserAddress> addresses;
+    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Cart> carts;
 
+
+    public Long getId() {
+        return id;
+    }
 
 
 
     public User(String userName, String email, String password,String phoneNumber, Collection<Role> roles) {
-        this.UserName = userName;
+        this.userName = userName;
         this.email = email;
         this.password = password;
         this.phoneNumber=phoneNumber;
+        this.roles = roles;
+    }
+    public User( String email,String otp, Collection<Role> roles) {
+
+        this.email = email;
+      this.otp=otp;
         this.roles = roles;
     }
 //    @Column(name="address_id")

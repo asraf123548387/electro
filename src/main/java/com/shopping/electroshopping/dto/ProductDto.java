@@ -6,14 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
-@Getter
-@Setter
-@NoArgsConstructor
-public class ProductDto {
-   private String ProductName;
-   private double price;
-   private String description;
-   private Long categoryId;
+   @Getter
+   @Setter
+   @NoArgsConstructor
+   public class ProductDto {
+      private String ProductName;
+      private double price;
+      private String description;
+      private Long categoryId;
+
+      private String imageName;
 
 
 

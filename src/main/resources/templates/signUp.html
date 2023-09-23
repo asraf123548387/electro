@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
     <title>User signup</title>
@@ -9,20 +9,6 @@
 </head>
 <body>
 
-
-<!--<header class="p-3 text-bg-dark">-->
-<!--    <div class="container">-->
-<!--        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">-->
-<!--            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">-->
-<!--                <a class="navbar-brand" href="#" th:href="@{/}">Welcome</a>-->
-<!--            </a>-->
-
-<!--            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">-->
-<!--            </ul>-->
-
-<!--        </div>-->
-<!--    </div>-->
-<!--</header>-->
 
 <br>
 <br>
@@ -37,7 +23,10 @@
                     to our awesome app!</div>
             </div>
 
-            <h1>Sign Up</h1>
+            <div class="text-center">
+                <h1 class="mx-auto">Sign Up</h1>
+            </div>
+
 
             <form th:action="@{/registration}" method="post" th:object="${user}">
 
@@ -67,7 +56,8 @@
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Register</button>
                     <span>Already registered? <a href="/" th:href="@{/login}">Login
-								here</a></span>
+								here</a><a thref="#"> OTP SIGN UP</a></span>
+
                 </div>
             </form>
         </div>
@@ -75,81 +65,3 @@
 </div>
 </body>
 </html>
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-<!--    <meta charset="ISO-8859-1">-->
-<!--    <title>Registration</title>-->
-
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">-->
-
-<!--</head>-->
-<!--<body>-->
-
-
-<!--<header class="p-3 text-bg-dark">-->
-<!--    <div class="container">-->
-<!--        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">-->
-<!--            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">-->
-<!--                <a class="navbar-brand" href="#" th:href="@{/}">Registration and Login Module</a>-->
-<!--            </a>-->
-
-<!--            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">-->
-<!--            </ul>-->
-
-<!--        </div>-->
-<!--    </div>-->
-<!--</header>-->
-
-<!--<br>-->
-<!--<br>-->
-<!--&lt;!&ndash; Create HTML registration form &ndash;&gt;-->
-<!--<div class="container">-->
-<!--    <div class="row justify-content-center">-->
-<!--        <div class="col-md-6 col-md-offset-3">-->
-
-<!--            &lt;!&ndash; success message &ndash;&gt;-->
-<!--            <div th:if="${param.success}">-->
-<!--                <div class="alert alert-info">You've successfully registered-->
-<!--                    to our awesome app!</div>-->
-<!--            </div>-->
-
-<!--            <h1>Registration</h1>-->
-
-<!--&lt;!&ndash;            <form th:action="@{/signUp}" method="post" th:object="${user}">&ndash;&gt;-->
-<!--            <form>-->
-<!--                <div class="form-group">-->
-<!--                    <label class="control-label" for="firstName"> First Name </label>-->
-<!--                    <input id="firstName" class="form-control" th:field="*{firstName}"-->
-<!--                           required autofocus="autofocus" />-->
-<!--                </div>-->
-
-<!--                <div class="form-group">-->
-<!--                    <label class="control-label" for="lastName"> Last Name </label> <input-->
-<!--                        id="lastName" class="form-control" th:field="*{lastName}"-->
-<!--                        required autofocus="autofocus" />-->
-<!--                </div>-->
-
-<!--                <div class="form-group">-->
-<!--                    <label class="control-label" for="email"> Email </label> <input-->
-<!--                        id="email" class="form-control" th:field="*{email}" required-->
-<!--                        autofocus="autofocus" type="email"/>-->
-<!--                </div>-->
-
-<!--                <div class="form-group">-->
-<!--                    <label class="control-label" for="password"> Password </label> <input-->
-<!--                        id="password" class="form-control" type="password"-->
-<!--                        th:field="*{password}" required autofocus="autofocus" />-->
-<!--                </div>-->
-
-<!--                <div class="form-group">-->
-<!--                    <button type="submit" class="btn btn-success">Register</button>-->
-<!--                    <span>Already registered? <a href="/" th:href="@{/login}">Login-->
-<!--								here</a></span>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->
