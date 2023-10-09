@@ -14,4 +14,10 @@ public interface UserService extends UserDetailsService {
     public void unblockUser(Long id);
     public UserAddress addUserAddress(UserAddressDto userAddressDto);
 
+    void editUserAddressInCheckOut(long id, UserAddressDto userAddressDto);
+
+    boolean isEmailAlreadyRegistered(String email);
+
+
+//    void saveUser(User user);
 }

@@ -1,4 +1,4 @@
-package com.shopping.electroshopping.service;
+package com.shopping.electroshopping.service.paymentservice;
 
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;

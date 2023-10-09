@@ -20,6 +20,7 @@ public class UserSignUpDto {
     private String password;
     @NotNull(message = "phone number is empty")
     private String phoneNumber;
+    private String otp;
     public UserSignUpDto(String userName, String email, String password,String phoneNumber) {
         super();
         this.userName = userName;

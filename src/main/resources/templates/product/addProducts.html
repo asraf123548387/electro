@@ -58,7 +58,10 @@
                     <label for="image">Product Image</label>
                     <input id="image" value="./img/" class="form-control" type="text" name="image" th:field="*{imageName}" accept="image/*" required>
                 </div>
-
+                <div class="form-group">
+                    <label for="description">ProductQuantity</label>
+                    <input id="productQuantity" class="form-control" th:field="*{stock}" required>
+                </div>
                 <div class="form-group">
                     <label >Select Category</label>
                     <select class="form-control" th:field="*{categoryId}" name="category">

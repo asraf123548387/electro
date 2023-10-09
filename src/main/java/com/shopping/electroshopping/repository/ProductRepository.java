@@ -1,5 +1,6 @@
 package com.shopping.electroshopping.repository;
 
+import com.shopping.electroshopping.model.category.Category;
 import com.shopping.electroshopping.model.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,5 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     List<Product> findByproductName(String productName);
 
 
+    List<Product> findByCategory(Category samsungCategory);
 }

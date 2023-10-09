@@ -1,6 +1,7 @@
 package com.shopping.electroshopping.model.cart;
 
 import com.shopping.electroshopping.model.product.Product;
+import com.shopping.electroshopping.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,9 @@ public class CartItems {
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

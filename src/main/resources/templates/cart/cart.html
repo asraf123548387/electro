@@ -19,7 +19,7 @@
   <link type="text/css" rel="stylesheet" th:href="@{/css/slick-theme.css}"/>
 
   <!-- nouislider -->
-  <link type="text/css" rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+
 
   <!-- Font Awesome Icon -->
   <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
@@ -34,311 +34,127 @@
   <script th:src="@{/js/respond.min.js}"></script>
   <![endif]-->
   <style>
-    /* Additional custom styles here */
+    body{
+    margin-top:20px;
+    background:#eee;
+}
+.ui-w-40 {
+    width: 50px !important;
+    height: auto;
+}
 
-    /* Center the cart page */
-    .cart-page {
-        margin: 80px auto;
-        max-width: 800px; /* Adjust as needed */
-    }
+.card{
+    box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+}
 
-    /* Style the table */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px; /* Add spacing between the table and the header */
-    }
+.ui-product-color {
+    display: inline-block;
+    overflow: hidden;
+    margin: .144em;
+    width: .875rem;
+    height: .875rem;
+    border-radius: 10rem;
+    -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
+    vertical-align: middle;
+}
+    .custom-btn {
+  background-color: white; /* Red background color */
+  color: black; /* White text color */
+  border: 1px; /* Remove the button border */
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 20px; /* Add some border radius for rounded corners */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
 
-    /* Style the cart item row */
-    .cart-item-row {
-        border-bottom: 1px solid #ddd;
-        padding: 15px 0;
-    }
-
-    /* Style the product image */
-    .product-img {
-        max-width: 100px; /* Adjust as needed */
-        margin-right: 10px;
-    }
-
-    /* Style the Remove link */
-    .remove-link {
-        color: #ff523b;
-        font-size: 12px;
-        text-decoration: none;
-    }
-
-    /* Style the quantity input */
-    .quantity-input {
-        width: 60px; /* Adjust as needed */
-        height: 30px;
-        padding: 5px;
-    }
-
-    /* Style the total price section */
-    .total-price {
-        margin-top: 20px; /* Add spacing between the table and the total price */
-        text-align: right;
-    }
-
-    /* Style the Bootstrap table */
-    .table {
-        background-color: #fff; /* White background for the table */
-    }
-    .place-order-button {
-    text-align: right;
-    margin-top: 20px; /* Adjust the top margin as needed for spacing */
+/* Hover effect for the button */
+.custom-btn:hover {
+  background-color: black; /* Darker red on hover */
 }
   </style>
 </head>
-<body>
-<body>
 
+<body>
 <!-- HEADER -->
-<header>
-  <!-- TOP HEADER -->
-  <div id="top-header">
-    <div class="container">
-
-
+<div class="container px-3 my-5 clearfix " >
+  <!-- Shopping cart table -->
+  <div class="card">
+    <div class="card-header">
+      <h2>CART</h2>
     </div>
-  </div>
-  <!-- /TOP HEADER -->
+    <div th:if="${error}" class="error-message">
+      <p th:text="${error}"></p>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered m-0 " style="background-color:white;width: 100%;">
+          <thead>
+          <tr>
+            <!-- Set columns width -->
+            <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
 
-  <!-- MAIN HEADER -->
-  <div id="header">
-    <!-- container -->
-    <div class="container">
-      <!-- row -->
-      <div class="row">
-        <!-- LOGO -->
-        <div class="col-md-3">
-          <div class="header-logo">
-            <a href="#" class="logo">
-              <img src="/img/logo.png" alt="">
-            </a>
-          </div>
-        </div>
-        <!-- /LOGO -->
+            <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
+            <th class="text-right py-3 px-4" style="width: 100px;"></th>
+            <th class="text-right py-3 px-4" style="width: 100px;">price</th>
+            <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i class="ino ion-md-trash"></i></a></th>
+          </tr>
+          </thead>
+          <tbody>
 
-        <!-- ACCOUNT -->
-        <div class="col-md-3 clearfix">
-          <div class="header-ctn">
+              <tr th:each="cart : ${cartItems}">
+                <td class="p-4">
+                  <div class="media align-items-center">
+                    <img th:src="${cart.product.imageName}" class="d-block ui-w-40 ui-bordered mr-4" alt="">
+                    <div class="media-body">
+                      <a href="#" class="d-block text-dark" th:text="${cart.product.productName}">Product 1</a>
+                    </div>
+                  </div>
+                </td>
+                <form th:action="@{/user/updateCartItemQuantity}" method="post">
+                <td class="align-middle p-4">
+                  <select class="form-control" name="quantity">
+                    <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}" th:selected="${i == cart.quantity}">1</option>
+                  </select>
+                  <input type="hidden" name="cartItemId" th:value="${cart.cartItemId}" />
+                </td>
+                  <td class="text-center align-middle px-0">
+                    <!-- Submit the form to update quantity -->
+                    <button type="submit" class="btn btn-primary custom-btn">Update</button>
+                  </td>
+                </form>
+                <td class="text-right font-weight-semibold align-middle p-4" th:text="${cart.product.price * cart.quantity}">$115.1</td>
+                <td class="text-center align-middle px-0">
+                  <a th:href="@{/user/deleteCartItems/{id}(id=${cart.cartItemId})}" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove">×</a>
+                </td>
+              </tr>
 
-            <!-- Menu Toogle -->
-            <div class="menu-toggle">
-              <a href="#">
-
-                <span>Menu</span>
-              </a>
-            </div>
-            <!-- /Menu Toogle -->
-          </div>
-        </div>
-        <!-- /ACCOUNT -->
+          </tbody>
+        </table>
       </div>
-      <!-- row -->
-    </div>
-    <!-- container -->
-  </div>
-  <!-- /MAIN HEADER -->
-</header>
-<!-- /HEADER -->
+      <!-- / Shopping cart table -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
 
-<!-- NAVIGATION -->
-<nav id="navigation">
-  <!-- container -->
-  <div class="container">
-    <!-- responsive-nav -->
-    <div id="responsive-nav">
-      <!-- NAV -->
-      <ul class="main-nav nav navbar-nav">
-        <li class="active"><a th:href="@{/}">Home</a></li>
-      </ul>
-      <!-- /NAV -->
-    </div>
-    <!-- /responsive-nav -->
-  </div>
-  <!-- /container -->
-</nav>
-<!-- /NAVIGATION -->
+        <div class="d-flex">
 
-<!-- BREADCRUMB -->
-<div id="breadcrumb" class="section">
-  <!-- container -->
-  <div class="container">
-    <!-- row -->
-    <div class="row">
-      <div class="col-md-12">
-        <h3 class="breadcrumb-header">Cart</h3>
-      </div>
-    </div>
-    <!-- /row -->
-  </div>
-  <!-- /container -->
-</div>
-
-<!-----cart items----->
-<div class="container cart-page">
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Product</th>
-      <th>Quantity</th>
-      <th>Subtotal</th>
-      <th></th> <!-- Add an empty column for the Remove button -->
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Cart item 1 -->
-    <tr class="cart-item-row" th:each="cart : ${cartItems}">
-      <td>
-        <div class="cart-info">
-          <img  th:src="${cart.product.imageName}" class="product-img">
-          <div>
-            <p th:text="${cart.product.productName}">Red Laptop</p>
-            <small th:text="${cart.product.price}">Price: $500</small>
-            <br>
-
+          <div class="text-right mt-4">
+            <label class="text-muted font-weight-normal m-0">Total price</label>
+            <div class="text-large"><strong  th:text="${'₹'+totalPrice}">$1164.65</strong></div>
           </div>
         </div>
-      </td>
-      <td><input type="number" value="1" class="quantity-input"></td>
-      <td th:text="${'₹'+cart.product.price}">$500</td>
-      <td><a th:href="@{/user/deleteCartItems/{id}(id=${cart.cartItemId})}" class="remove-link">Remove</a></td>
-    </tr>
+      </div>
 
-    <!-- Repeat the above cart item structure for additional items -->
+      <div class="float-right">
+        <a th:href="@{/}">
+          <button type="button" class="btn btn-lg btn-primary mt-2 custom-btn">go back</button>
+        </a>
+        <a th:href="@{/user/checkOut}">
+          <button type="button" class="btn btn-lg btn-primary mt-2 custom-btn">Continue</button>
+        </a>
+      </div>
 
-    </tbody>
-  </table>
-
-  <!-- Total price section -->
-  <div class="total-price">
-    <table class="table" >
-      <tr>
-        <td>Total</td>
-        <td th:text="${totalPrice}">$200</td>
-      </tr>
-
-<!--      <tr>-->
-<!--        <td>Total</td>-->
-<!--&lt;!&ndash;  <td th:text="${totalPrice}">$220</td>&ndash;&gt;-->
-<!--      </tr>-->
-    </table>
-  </div>
-  <div class="place-order-button">
-  <a th:href="@{/user/checkOut}">  <button type="button" class="btn btn-primary">
-    CHECK OUT
-  </button></a>
+    </div>
   </div>
 </div>
-
-
-
-<!-- NEWSLETTER -->
-
-<!-- /NEWSLETTER -->
-<!-- FOOTER -->
-<footer id="footer">
-  <!-- top footer -->
-  <div class="section">
-    <!-- container -->
-    <div class="container">
-      <!-- row -->
-      <div class="row">
-        <div class="col-md-3 col-xs-6">
-          <div class="footer">
-            <h3 class="footer-title">About Us</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
-            <ul class="footer-links">
-              <li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
-              <li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
-              <li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-md-3 col-xs-6">
-          <div class="footer">
-            <h3 class="footer-title">Categories</h3>
-            <ul class="footer-links">
-              <li><a href="#">Hot deals</a></li>
-              <li><a href="#">Laptops</a></li>
-              <li><a href="#">Smartphones</a></li>
-              <li><a href="#">Cameras</a></li>
-              <li><a href="#">Accessories</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="clearfix visible-xs"></div>
-
-        <div class="col-md-3 col-xs-6">
-          <div class="footer">
-            <h3 class="footer-title">Information</h3>
-            <ul class="footer-links">
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Contact Us</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Orders and Returns</a></li>
-              <li><a href="#">Terms & Conditions</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-md-3 col-xs-6">
-          <div class="footer">
-            <h3 class="footer-title">Service</h3>
-            <ul class="footer-links">
-              <li><a href="#">My Account</a></li>
-              <li><a href="#">View Cart</a></li>
-              <li><a href="#">Wishlist</a></li>
-              <li><a href="#">Track My Order</a></li>
-              <li><a href="#">Help</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- /row -->
-    </div>
-    <!-- /container -->
-  </div>
-  <!-- /top footer -->
-
-  <!-- bottom footer -->
-  <div id="bottom-footer" class="section">
-    <div class="container">
-      <!-- row -->
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <ul class="footer-payments">
-            <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
-            <li><a href="#"><i class="fa fa-credit-card"></i></a></li>
-            <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
-            <li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
-            <li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
-            <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
-          </ul>
-          <span class="copyright">
-								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							</span>
-        </div>
-      </div>
-      <!-- /row -->
-    </div>
-    <!-- /container -->
-  </div>
-  <!-- /bottom footer -->
-</footer>
-<script th:src="@{/js/jquery.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/slick.min.js}"></script>
-<script th:src="@{/js/nouislider.min.js}"></script>
-<script th:src="@{/js/jquery.zoom.min.js}"></script>
-<script th:src="@{/js/main.js}"></script>
 </body>
 
 </html>

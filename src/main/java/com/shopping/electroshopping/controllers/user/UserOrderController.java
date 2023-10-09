@@ -64,13 +64,29 @@ public class UserOrderController {
     userOrder.setOrderDate(currentDateTime);
     userOrder.setTotalAmount((int) totalPrice);
     Order savedOrder = orderRepository.save(userOrder);
-//    List<CartItems> cartItems = cartItemsRepository.findByUser(user);
-    OrderItems orderItems=new OrderItems();
-     orderItems.setOrder(savedOrder);
-     orderItems.setQuantity(1);
-     orderItems.setUnitPrice(totalPrice);
-    List<Order> orders = orderRepository.findByUser(user);
-    orderItemsRepository.save(orderItems);
+
+    for (CartItems cartItem : userCart.getCartItems()) {
+        OrderItems orderItem = new OrderItems();
+        orderItem.setOrder(savedOrder);
+        orderItem.setQuantity(cartItem.getQuantity());
+        orderItem.setUnitPrice(cartItem.getPrice());
+
+        // You need to set the product or product ID here, based on your data model
+         orderItem.setProduct(cartItem.getProduct());
+
+        orderItemsRepository.save(orderItem);
+    }
+
+//    List<Order> orders = orderRepository.findByUser(user);
+//    orderItemsRepository.save(orderItems);
+// You can delete the cart items if needed
+ cartItemsRepository.deleteAll(userCart.getCartItems());
+
+// Or mark them as ordered, depending on your business logic
+// userCart.getCartItems().forEach(cartItem -> cartItem.setOrdered(true));
+// cartRepository.save(userCart);
+
+
     model.addAttribute("totalPrice",newtotal);
 //    model.addAttribute("orderid",orders);
 
@@ -80,14 +96,68 @@ public class UserOrderController {
 
 }
 
+    @GetMapping("/orderPlacedWithWallet")
+    public String orderplacedwithwallet(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email);
+        double totalPrice = cartItemsRepository.sumCartItemsPriceByUser(user);
+        Cart userCart = cartRepository.findByUser(user);
+        double newtotal=userCart.getTotal();
 
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        Order userOrder = new Order();
+
+        userOrder.setUser(user);
+        userOrder.setPaymentMethod("Wallet");
+        userOrder.setStatus("confirmed");
+        userOrder.setOrderDate(currentDateTime);
+        userOrder.setTotalAmount((int) totalPrice);
+        Order savedOrder = orderRepository.save(userOrder);
+
+        for (CartItems cartItem : userCart.getCartItems()) {
+            OrderItems orderItem = new OrderItems();
+            orderItem.setOrder(savedOrder);
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setUnitPrice(cartItem.getPrice());
+
+            // You need to set the product or product ID here, based on your data model
+            orderItem.setProduct(cartItem.getProduct());
+
+            orderItemsRepository.save(orderItem);
+        }
+
+//    List<Order> orders = orderRepository.findByUser(user);
+//    orderItemsRepository.save(orderItems);
+// You can delete the cart items if needed
+        cartItemsRepository.deleteAll(userCart.getCartItems());
+
+// Or mark them as ordered, depending on your business logic
+// userCart.getCartItems().forEach(cartItem -> cartItem.setOrdered(true));
+// cartRepository.save(userCart);
+
+
+        model.addAttribute("totalPrice",newtotal);
+//    model.addAttribute("orderid",orders);
+
+
+        return "/order/plcedOrder";
+
+
+    }
 @GetMapping("/showOrder")
     public String showOrders(Model model)
 {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String email = authentication.getName();
+    User user = userRepository.findByEmail(email);
     // Fetch the list of orders for the user (assuming a method findByUserEmail in your repository)
     List<Order> orderList = orderRepository.findByUserEmail(email);
+    Cart userCart = cartRepository.findByUser(user);
+    double newtotal=userCart.getTotal();
+model.addAttribute("total",newtotal);
     model.addAttribute("orderList", orderList);
     return "/order/showOrder";
 
@@ -95,8 +165,15 @@ public class UserOrderController {
 @GetMapping("cancelOrder/{id}")
     public String cancelOrder(@PathVariable("id")Long id)
 {
-    this.orderService.deleteProductByid(id);
+//    this.orderService.deleteProductByid(id);
+    orderService.cancelOrder(id);
     return "redirect:/user/showOrder";
 }
+    @GetMapping("cancellOrder/{id}")
+    public String cancellOrder(@PathVariable("id")Long id) {
+        this.orderService.deleteProductByid(id);
+        return "redirect:/user/showOrder";
+    }
 
 }
+

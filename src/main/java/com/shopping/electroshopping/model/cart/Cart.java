@@ -21,6 +21,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     private Long cartId;
+
+    private double total;
     @ManyToOne
     @JoinColumn(name ="user_id")
     private User user;

@@ -2,6 +2,8 @@ package com.shopping.electroshopping.model.product;
 
 import com.shopping.electroshopping.model.cart.CartItems;
 import com.shopping.electroshopping.model.category.Category;
+//import com.shopping.electroshopping.model.productOffer.ProductOffer;
+import com.shopping.electroshopping.model.wishlist.WishListItem;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,18 +29,31 @@ public class Product {
     private double price;
     @Column(name = "description")
     private String description;
+    @Column(name="stock")
+    private Integer stock;
     @OneToMany(mappedBy = "product")
     private List<CartItems> cartItems;
-
+    @OneToMany(mappedBy = "product")
+    private List<WishListItem> wishListItems;
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "category_id",referencedColumnName = "category_id")
     private Category category;
     @Column(name = "image_name")
     private String imageName;
+//   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+//   private List<ProductOffer> offers;
 
-
-    public Product(String productName, double price, String description) {
+    @Override
+    public String toString() {
+        return "Product{" +
+                "Id=" + Id +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", stock=" + stock +
+                ", category=" + (category != null ? category.getName() : null) + // Avoid circular reference
+                ", imageName='" + imageName + '\'' +
+                '}';
     }
-
 
 }

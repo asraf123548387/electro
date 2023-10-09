@@ -17,10 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,6 +46,7 @@ public class UserCartController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User user = userRepository.findByEmail(email);
+
         Cart userCart = null;
 
         if (user != null) {
@@ -66,6 +64,7 @@ public class UserCartController {
 
             // Create a CartItem
             Product product = productService.getProductById(productId);
+
             CartItems cartItem = new CartItems();
             cartItem.setProduct(product);
             cartItem.setQuantity(1); // Set the quantity as needed
@@ -82,10 +81,12 @@ public class UserCartController {
 
             List<CartItems> cartItems = cartItemsRepository.findByCartUser(user);
             double totalPrice = cartItemsRepository.sumCartItemsPriceByUser(user);
+            userCart.setTotal(totalPrice);
+            double newtotal= userCart.getTotal();
             // Pass the cart items to the Thymeleaf template
-            model.addAttribute("totalPrice", totalPrice);
+            model.addAttribute("totalPrice", newtotal);
             model.addAttribute("cartItems", cartItems);
-
+//            model.addAttribute("email",user);
             // Retrieve and add the product to the model
             model.addAttribute("product", product);
 
@@ -95,7 +96,22 @@ public class UserCartController {
             return "redirect:/login"; // Example: Redirect to the login page
         }
     }
+    @GetMapping("/addToCartOutOfStock")
+    public String addToCartoutofstock(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email);
+        Cart cart=cartRepository.findByUser(user);
+        List<CartItems> cartItems = cartItemsRepository.findByCartUser(user);
+        double totalPrice = cartItemsRepository.sumCartItemsPriceByUser(user);
+        cart.setTotal(totalPrice);
+        double newtotal= cart.getTotal();
+        // Pass the cart items to the Thymeleaf template
+        model.addAttribute("totalPrice", newtotal);
+        model.addAttribute("cartItems", cartItems);
+        return "/cart/cart";
 
+    }
     @GetMapping("/cart")
     public String showCart(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -117,6 +133,18 @@ public class UserCartController {
        return "redirect:/user/cart";
     }
 
+    @PostMapping("/updateCartItemQuantity")
+    public String updateCartItemQuantity(@RequestParam Long cartItemId, @RequestParam int quantity, Model model) {
+        cartService.updateCartItemQuantity(cartItemId, quantity);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email);
+//        double totalPrice = cartItemsRepository.sumCartItemsPriceByUserSecond(user);
+        // Pass the cart items to the Thymeleaf template
+
+//        model.addAttribute("totalPric", totalPrice);
+        return "redirect:/user/cart";
+    }
 
 
 

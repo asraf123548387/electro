@@ -40,7 +40,82 @@
             addressFormContainer.style.display = 'block';
         });
     </script>
+<style>.black-button {
+    background-color: black; /* Set the background color to black */
+    color: white; /* Set the text color to white for better contrast */
+    border: none; /* Remove the button border */
+    padding: 10px 20px; /* Add padding for better appearance */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+}
+    /* Style the Addresses section */
+.mb-3 {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 
+/* Style the Addresses header */
+h4 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Style the Address list */
+.address-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* Style each Address item */
+.address-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Style the Address checkbox */
+.address-checkbox {
+    margin-right: 10px;
+}
+
+/* Style the Edit link */
+.edit-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Style the Add New Address button */
+.add-address-link {
+    text-align: center;
+    display: block;
+    margin-top: 20px;
+}
+
+/* Style the Black button */
+.black-button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.black-button:hover {
+    background-color: #555;
+}
+
+</style>
 </head>
 <body>
 
@@ -107,10 +182,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h3 class="breadcrumb-header">Checkout</h3>
-                <ul class="breadcrumb-tree">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li class="active">Checkout</li>
-                </ul>
+               <h3 class="breadcrumb-header"><a th:href="@{/}">Home</a></h3>
             </div>
         </div>
         <!-- /row -->
@@ -132,108 +204,34 @@
                     <div class="section-title">
                         <h3 class="title">Delivery  address</h3>
                     </div>
-
                     <div class="mb-3">
                         <h4>Addresses</h4>
-                        <ul>
+                        <ul class="address-list">
                             <li th:each="address, addressIndex : ${addresses}">
-                                <label>
+                                <div class="address-item">
                                     <input type="checkbox" class="address-checkbox">
-                                    <span th:text="${address.streetDetails}"></span>,
-                                    <span th:text="${address.cityName}"></span>,
-                                    <span th:text="${address.state}"></span>,
-                                    <span th:text="${address.postalCode}"></span>
-                                </label>
-                                <a thref="#" class="edit-link">Edit</a>
+                                    <div class="address-details">
+                                        <span th:text="${address.streetDetails}"></span>,
+                                        <span th:text="${address.cityName}"></span>,
+                                        <span th:text="${address.state}"></span>,
+                                        <span th:text="${address.postalCode}"></span>
+                                    </div>
+                                    <a th:href="@{/user/editUserAddressInCheckOut/{id}(id=${address.userAddressID})}" class="edit-link">Edit</a>
+                                </div>
                             </li>
                         </ul>
-                        <a th:href="@{/user/addUserAddressInCheckOut}" class="add-address-button"><button>Add New Address</button></a>
+                        <a th:href="@{/user/addUserAddressInCheckOut}" class="add-address-link">
+                            <button class="black-button">Add New Address</button>
+                        </a>
                     </div>
-<!--                    <div class="mb-3">-->
-<!--                        <h4>Add New Address</h4>-->
-<!--                    </div>-->
+
                     <div id="addressFormContainer">
-                        <!-- Your address form goes here -->
 
-<!--                            <form th:action="@{/user/addUserAddressInCheckOut}" method="post" th:object="${userAddressDto}">-->
-<!--                                <input type="hidden" name="user_id" th:value="${user_id}" />-->
-
-<!--                                <div class="form-group">-->
-<!--                                    <label for="street">Street Details</label>-->
-<!--                                    <input type="text" class="form-control" id="street" th:field="*{streetDetails}" >-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="cityname">Mobile Number</label>-->
-<!--                                    <input type="text" class="form-control" id="addressPhoneNumber" th:field="*{addressPhoneNumber}" >-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="cityname">CityName</label>-->
-<!--                                    <input type="text" class="form-control" id="cityname"  th:field="*{cityName}">-->
-<!--                                </div>-->
-
-
-<!--                                <div class="form-group">-->
-<!--                                    <label for="state">State</label>-->
-<!--                                    <input type="text" class="form-control" id="state" th:field="*{state}">-->
-<!--                                </div>-->
-
-<!--                                <div class="form-group">-->
-<!--                                    <label for="postalCode">Postal Code</label>-->
-<!--                                    <input type="text" class="form-control" id="postalCode"  th:field="*{postalCode}" required>-->
-<!--                                </div>-->
-
-<!--                                <div class="form-group text-center">-->
-<!--                                    <button type="submit" class="btn btn-primary">Submit</button>-->
-<!--                                </div>-->
-<!--                            </form>-->
 
                     </div>
 
-
-
-
-<!--                    <div class="form-group">-->
-<!--                        <input class="input" type="text" name="last-name" placeholder="User Name">-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <input class="input" type="email" name="email" placeholder="Email">-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <input class="input" type="text" name="address" placeholder="Address">-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <input class="input" type="text" name="city" placeholder="City">-->
-<!--                    </div>-->
-
-<!--                    <div class="form-group">-->
-<!--                        <input class="input" type="text" name="zip-code" placeholder="ZIP Code">-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <input class="input" type="tel" name="tel" placeholder="phone number">-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <div class="input-checkbox">-->
-<!--                            <input type="checkbox" id="create-account">-->
-<!--                            <label for="create-account">-->
-<!--                                <span></span>-->
-<!--                                Create Account?-->
-<!--                            </label>-->
-<!--                            <div class="caption">-->
-<!--                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>-->
-<!--                                <input class="input" type="password" name="password" placeholder="Enter Your Password">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
-                <!-- /Billing Details -->
 
-                <!-- Shiping Details -->
-
-                <!-- /Shiping Details -->
-
-                <!-- Order notes -->
-
-                <!-- /Order notes -->
             </div>
 
             <!-- Order Details -->
@@ -241,28 +239,38 @@
                 <div class="section-title text-center">
                     <h3 class="title">Your Order</h3>
                 </div>
-                <div class="order-summary">
+                <div class="order-summary" >
                     <div class="order-col">
                         <div><strong>PRODUCT</strong></div>
                         <div><strong>TOTAL</strong></div>
                     </div>
-                    <div class="order-products">
+                    <div class="order-products"  th:each="cart : ${cartItems}">
                         <div class="order-col">
-                            <div>1x Product Name Goes Here</div>
-                            <div>$980.00</div>
-                        </div>
-                        <div class="order-col">
-                            <div>2x Product Name Goes Here</div>
-                            <div>$980.00</div>
+
+                           <span th:text="${cart.quantity+'x::'}"></span> <div th:text="${cart.product.productName}">1x Product Name Goes Here</div>
+                            <div th:text="${'₹'+cart.product.price * cart.quantity}">$980.00</div>
                         </div>
                     </div>
                     <div class="order-col">
                         <div>Shiping</div>
                         <div><strong>FREE</strong></div>
                     </div>
+<!--                    <a th:href="@{/user/applyCouponPage}">apply coupon</a>-->
+
+                    <form th:action="@{/user/applyCoupon}" method="post" th:object="${cart}">
+
+                        <div class="form-group">
+                            <label for="couponCode">Coupon Code:</label>
+                           <span> <input type="text" id="couponCode" name="couponCode"  />  <button style="color:white;background-color:black;" type="submit">Apply </button></span>
+
+                            <div th:if="${error}" class="error-message">
+                                <p style="color:red;" th:text="${error}"></p>
+                            </div>
+                        </div>
+                    </form>
                     <div class="order-col">
                         <div><strong>TOTAL</strong></div>
-                        <div><strong class="order-total">$2940.00</strong></div>
+                        <div><strong class="order-total" th:text="${'₹'+totalPrice}">$2940.00</strong></div>
                     </div>
                 </div>
                 <div class="payment-method">
@@ -270,41 +278,40 @@
                         <input type="radio" name="payment" id="payment-1">
                         <label for="payment-1">
                             <span></span>
-                            Direct Bank Transfer
+                           CASH ON DELIVERY
                         </label>
-                        <div class="caption">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        </div>
                     </div>
                     <div class="input-radio">
                         <input type="radio" name="payment" id="payment-2">
                         <label for="payment-2">
                             <span></span>
-                            Cheque Payment
+                   <a th:href="@{/user/home}" > pay pal</a>
                         </label>
-                        <div class="caption">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        </div>
                     </div>
                     <div class="input-radio">
                         <input type="radio" name="payment" id="payment-3">
-                        <label for="payment-3">
+                        <label for="payment-2">
                             <span></span>
-                            Paypal System
+                            <a th:href="@{/user/wallet}" > wallet</a>
                         </label>
-                        <div class="caption">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        </div>
                     </div>
+                    <div class="input-radio">
+                        <input type="radio" name="payment" id="payment-4">
+                        <label for="payment-2">
+                            <span></span>
+                            <a th:href="@{/user/razorPay}" > RazorPay</a>
+                        </label>
+                    </div>
+
                 </div>
-                <div class="input-checkbox">
-                    <input type="checkbox" id="terms">
-                    <label for="terms">
-                        <span></span>
-                        I've read and accept the <a href="#">terms & conditions</a>
-                    </label>
-                </div>
-                <a href="#" class="primary-btn order-submit">Place order</a>
+<!--                <div class="input-checkbox">-->
+<!--                    <input type="checkbox" id="terms">-->
+<!--                    <label for="terms">-->
+<!--                        <span></span>-->
+<!--                        I've read and accept the <a href="#">terms & conditions</a>-->
+<!--                    </label>-->
+<!--                </div>-->
+                <a th:href="@{/user/orderPlaced}" class="primary-btn order-submit">Place order</a>
             </div>
             <!-- ;/w/Order Details -->
         </div>
@@ -312,110 +319,8 @@
     </div>
     <!-- ;/w/container -->
 </div>
-<!-;/w- /SECTION -->
 
-<!-- /NEWSLETTER -->
 
-<!-- FOOTER -->
-<footer id="footer">
-    <!-- top footer -->
-    <div class="section">
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-                <div class="col-md-3 col-xs-6">
-                    <div class="footer">
-                        <h3 class="footer-title">About Us</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
-                        <ul class="footer-links">
-                            <li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
-                            <li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-xs-6">
-                    <div class="footer">
-                        <h3 class="footer-title">Categories</h3>
-                        <ul class="footer-links">
-                            <li><a href="#">Hot deals</a></li>
-                            <li><a href="#">Laptops</a></li>
-                            <li><a href="#">Smartphones</a></li>
-                            <li><a href="#">Cameras</a></li>
-                            <li><a href="#">Accessories</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="clearfix visible-xs"></div>
-
-                <div class="col-md-3 col-xs-6">
-                    <div class="footer">
-                        <h3 class="footer-title">Information</h3>
-                        <ul class="footer-links">
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Orders and Returns</a></li>
-                            <li><a href="#">Terms & Conditions</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-xs-6">
-                    <div class="footer">
-                        <h3 class="footer-title">Service</h3>
-                        <ul class="footer-links">
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">View Cart</a></li>
-                            <li><a href="#">Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
-                            <li><a href="#">Help</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- /row -->
-        </div>
-        <!-- /container -->
-    </div>
-    <!-- /top footer -->
-
-    <!-- bottom footer -->
-    <div id="bottom-footer" class="section">
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <ul class="footer-payments">
-                        <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
-                        <li><a href="#"><i class="fa fa-credit-card"></i></a></li>
-                        <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
-                        <li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
-                        <li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
-                        <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
-                    </ul>
-                    <span class="copyright">
-								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							</span>
-                </div>
-            </div>
-            <!-- /row -->
-        </div>
-        <!-- /container -->
-    </div>
-    <!-- /bottom footer -->
-</footer>
-<script th:src="@{/js/jquery.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/slick.min.js}"></script>
-<script th:src="@{/js/nouislider.min.js}"></script>
-<script th:src="@{/js/jquery.zoom.min.js}"></script>
-<script th:src="@{/js/main.js}"></script>
 </body>
 
 </html>

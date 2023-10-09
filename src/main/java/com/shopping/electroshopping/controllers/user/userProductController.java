@@ -41,31 +41,55 @@ public class userProductController {
     @GetMapping("/dellCollection")
     public String dellCollection(Model model)
     {
-        List<Product> productList=productRepository.findAll();
+        Category dellCategory = categoryRepository.findByName("DELL");
+
+        if (dellCategory != null) {
+            List<Product> productList = productRepository.findByCategory(dellCategory);
+            model.addAttribute("listProducts", productList);
+        }
+//        List<Product> productList=productRepository.findAll();
         List<Category> categories=categoryRepository.findAll();
-        model.addAttribute("listProducts",productList);
+//        model.addAttribute("listProducts",productList);
         model.addAttribute("categoryList",categories);
         return "/product/dellCollection";
     }
     @GetMapping("/samsungCollection")
     public String samsungCollection(Model model)
     {
-        List<Product> productList=productRepository.findAll();
+        Category samsungCategory = categoryRepository.findByName("SAMSUNG");
+
+        if (samsungCategory != null) {
+            List<Product> productList = productRepository.findByCategory(samsungCategory);
+            model.addAttribute("listProducts", productList);
+        }
+//        List<Product> productList=productRepository.findAll();
         List<Category> categories=categoryRepository.findAll();
-        model.addAttribute("listProducts",productList);
+//        model.addAttribute("listProducts",productList);
         model.addAttribute("categoryList",categories);
         return "/product/samsungCollection";
     }
     @GetMapping("/hpCollection")
     public String hpCollection(Model model)
     {
-        List<Product> productList=productRepository.findAll();
+        Category hpCategory = categoryRepository.findByName("HP");
+
+        if (hpCategory != null) {
+            List<Product> productList = productRepository.findByCategory(hpCategory);
+            model.addAttribute("listProducts", productList);
+        }
+//        List<Product> productList=productRepository.findAll();
         List<Category> categories=categoryRepository.findAll();
-        model.addAttribute("listProducts",productList);
+//        model.addAttribute("listProducts",productList);
         model.addAttribute("categoryList",categories);
         return "/product/hpCollection";
     }
 
-
+    @GetMapping("/productSearch")
+    public String searchProduct(@RequestParam("productName")String productName,Model model)
+    {
+        List<Product> list=productService.getProductByName(productName);
+        model.addAttribute("listProducts",list);
+        return "index";
+    }
 
 }

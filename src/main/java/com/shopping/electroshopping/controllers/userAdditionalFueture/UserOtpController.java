@@ -1,4 +1,4 @@
-package com.shopping.electroshopping.controllers.user;
+package com.shopping.electroshopping.controllers.userAdditionalFueture;
 
 
 import com.shopping.electroshopping.model.user.User;

@@ -1,2 +1,4 @@
-package com.shopping.electroshopping.service.couponService;public interface CouponService {
+package com.shopping.electroshopping.service.couponService;
+
+public interface CouponService {
 }

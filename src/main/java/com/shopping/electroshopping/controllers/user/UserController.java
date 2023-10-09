@@ -10,6 +10,7 @@ import com.shopping.electroshopping.repository.UserRepository;
 import com.shopping.electroshopping.service.userservice.UserService;
 import com.shopping.electroshopping.service.userservice.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -99,11 +100,6 @@ public class UserController {
     }
 
 
-
-
-
-
-
     @GetMapping("/updateProfile/{user_id}")
     public String editUserProfile(@PathVariable("user_id") Long user_id, Model model) {
         User user=userRepository.findById(user_id).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + user_id));
@@ -124,6 +120,25 @@ public class UserController {
     {
         userService.updateProfile(userId,updateProfile);
         return "redirect:/user/profile";
+    }
+
+
+    @GetMapping("/changePassword/{user_id}")
+    public String showChangePasswordForm(@PathVariable("user_id") Long userId, Model model) {
+        // Retrieve user information and pass it to the view
+        User user=userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + userId));
+        model.addAttribute("user", user);
+        model.addAttribute("userId",userId);
+        return "/user/changePassword";
+    }
+
+    @PostMapping("/changePassword/{user_id}")
+    public String processChangePasswordForm(
+            @PathVariable("user_id") Long userId,
+            @RequestParam("password") String newPassword) {
+        // Update the user's password
+        userService.changePassword(userId, newPassword);
+        return "redirect:/user/profile"; // Redirect to the user's profile page or any other desired page
     }
 
 }

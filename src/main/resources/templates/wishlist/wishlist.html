@@ -1,10 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Electro - HTML Ecommerce Template</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/slick.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/slick-theme.css}"/>
+
+    <!-- nouislider -->
+
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/js/html5shiv.min.js}"></script>
+    <script th:src="@{/js/respond.min.js}"></script>
+    <![endif]-->
+    <style>
+        body{
+        margin-top:20px;
+        background:#eee;
+    }
+    .ui-w-40 {
+        width: 50px !important;
+        height: auto;
+    }
+
+    .card{
+        box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+    }
+
+    .ui-product-color {
+        display: inline-block;
+        overflow: hidden;
+        margin: .144em;
+        width: .875rem;
+        height: .875rem;
+        border-radius: 10rem;
+        -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
+        vertical-align: middle;
+    }
+        .custom-btn {
+      background-color: black; /* Red background color */
+      color: white; /* White text color */
+      border: 1px; /* Remove the button border */
+      padding: 10px 20px; /* Adjust padding as needed */
+      border-radius: 20px; /* Add some border radius for rounded corners */
+      transition: background-color 0.3s ease; /* Smooth background color transition */
+    }
+
+    /* Hover effect for the button */
+    .custom-btn:hover {
+      background-color: black; /* Darker red on hover */
+    }
+    </style>
 </head>
+
 <body>
-$END$
+<!-- HEADER -->
+<div class="container px-3 my-5 clearfix " >
+    <!-- Shopping cart table -->
+    <div class="card">
+        <div class="card-header">
+            <h2>WISHLIST</h2>
+        </div>
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered m-0 " style="background-color:white;width: 100%;">
+                    <thead>
+                    <tr>
+                        <!-- Set columns width -->
+                        <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
+
+
+                        <th class="text-right py-3 px-4" style="width: 100px;">price</th>
+                        <th class="text-right py-3 px-4" style="width: 100px;"></th>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="cart : ${wishListItem}">
+                        <td class="p-4">
+                            <div class="media align-items-center">
+                                <img th:src="${cart.product.imageName}" class="d-block ui-w-40 ui-bordered mr-4" alt="">
+                                <div class="media-body">
+                                    <a href="#" class="d-block text-dark" th:text="${cart.product.productName}">Product 1</a>
+                                </div>
+                            </div>
+                        </td>
+                            <td class="align-middle p-4">
+
+                                <a href="#" class="d-block text-dark" th:text="${cart.product.price}">Product 1</a>
+                            </td>
+                            <td class="text-center align-middle px-0">
+                                <a th:href="@{/user/addToCart(productId=${cart.product.Id})}">
+                                <button type="submit" class="btn btn-primary custom-btn">ADD TO CART</button>
+                                </a>
+                            </td>
+                        <td class="text-center align-middle px-0">
+                            <a th:href="@{/user/deleteWishList/{id}(id=${cart.id})}" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove">×</a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- / Shopping cart table -->
+
+
+
+
+        </div>
+    </div>
+</div>
 </body>
+
 </html>

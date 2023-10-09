@@ -74,13 +74,13 @@
             </th>
             <th>
                 <a th:href="@{'/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}" class="btn btn-link text-decoration-none text-dark font-weight-bold">
-                    product Name</a>
+                    stock</a>
             </th>
             <th>
                 <a th:href="@{'/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}" class="btn btn-link text-decoration-none text-dark font-weight-bold">
                     category</a>
             </th>
-            <th> <p  class="btn btn-link text-decoration-none text-dark font-weight-bold">Actions </p></th>
+            <th> <p th:href="@{'/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}" class="btn btn-link text-decoration-none text-dark font-weight-bold">Actions </p></th>
         </tr>
         </thead>
         <tbody>
@@ -88,6 +88,8 @@
             <td th:text="${product.productName}"></td>
             <td th:text="${product.price}"></td>
             <td th:text="${product.description}"></td>
+            <td th:text="${product.stock}"></td>
+
             <td>
                 <!-- Display the product image -->
                 <img th:src="@{/static/img/{imageName}(imageName=${product.imageName})}"

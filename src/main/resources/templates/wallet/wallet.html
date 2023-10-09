@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Wallet Balance</title>
+    <link rel="stylesheet" th:href="@{/css/wallet.css}" /> <!-- Add a CSS file for styling -->
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* wallet.css */
+        .wallet-card {
+            text-align: center;
+        }
+
+        .balance {
+            font-size: 24px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
 </head>
 <body>
-$END$
+<!-- Center the card on the page -->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="wallet-card card">
+        <div class="card-body">
+            <h1 class="card-title">Your Wallet Balance</h1>
+            <p class="balance" th:text="'Balance: ' + ${walletBalance}"></p>
+            <p class="balance" th:text="'Order Amount: ' + ${total}"></p>
+
+            <!-- "Use Wallet" button -->
+          <a th:href="@{/user/useWallet}">  <button class="btn btn-success" onclick="useWallet()">Use Wallet</button></a>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JavaScript and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function useWallet() {
+        // Implement your logic for using the wallet here
+        // You can use JavaScript to make AJAX requests to the server or perform client-side actions
+        alert("Wallet used!");
+    }
+</script>
 </body>
 </html>

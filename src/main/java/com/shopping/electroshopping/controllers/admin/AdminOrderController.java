@@ -1,20 +1,24 @@
-package com.shopping.electroshopping.controllers.admin1;
+package com.shopping.electroshopping.controllers.admin;
 
 import com.shopping.electroshopping.model.order.Order;
-import com.shopping.electroshopping.repository.CartItemsRepository;
-import com.shopping.electroshopping.repository.CartRepository;
+import com.shopping.electroshopping.model.user.User;
 import com.shopping.electroshopping.repository.OrderItemsRepository;
 import com.shopping.electroshopping.repository.OrderRepository;
+import com.shopping.electroshopping.repository.UserRepository;
 import com.shopping.electroshopping.service.orderService.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Controller
 @RequestMapping("/admin")
 public class AdminOrderController {
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     OrderItemsRepository orderItemsRepository;
     @Autowired
@@ -24,8 +28,24 @@ public class AdminOrderController {
     @GetMapping("/orderList")
     public String orderList(Model model)
     {
+
         List<Order> orders=orderRepository.findAll();
         model.addAttribute("orderList",orders);
+
         return "order/orderList";
+    }
+    @GetMapping("/updateOrder/{id}")
+    public String updateOrder(@PathVariable("id")Long orderId,Model model)
+    {
+        Order order=orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + orderId));
+        model.addAttribute("order",order);
+        model.addAttribute("orderId",orderId);
+        return "/order/updateOrderStatus";
+    }
+    @PostMapping("/updateOrder/{id}")
+    public String updateStatus(@PathVariable("id") Long orderId, @ModelAttribute("order") Order orderdto)
+    {
+       orderService.editstatus(orderId,orderdto);
+        return "redirect:/admin/orderList";
     }
 }

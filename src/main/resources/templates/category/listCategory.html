@@ -64,22 +64,12 @@
                 <a th:href="@{'/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}}" class="btn btn-link text-decoration-none text-dark font-weight-bold">
                      Name</a>
             </th>
-<!--            <th>-->
-<!--                <a th:href="@{'/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${reverseSortDir}}" class="btn btn-link text-decoration-none text-dark font-weight-bold">-->
-<!--                    Last Name</a>-->
-<!--            </th>-->
-<!--            <th>-->
-<!--                <a th:href="@{'/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}" class="btn btn-link text-decoration-none text-dark font-weight-bold">-->
-<!--                    Email</a>-->
-<!--            </th>-->
-<!--            <th> <p  class="btn btn-link text-decoration-none text-dark font-weight-bold">Actions </p></th>-->
         </tr>
         </thead>
         <tbody>
         <tr th:each="category : ${listcategory}">
             <td th:text="${category.name}"></td>
-<!--            <td th:text="${user.lastName}"></td>-->
-<!--            <td th:text="${user.email}"></td>-->
+
             <td>
                 <a th:href="@{/admin/updateCategory/{id}(id=${category.id})}" class="btn btn-primary">Update</a>
                 <a  th:href="@{/admin/deleteCategory/{id}(id=${category.id})}" class="btn btn-danger">Delete</a>

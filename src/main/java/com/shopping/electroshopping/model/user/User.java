@@ -2,10 +2,15 @@ package com.shopping.electroshopping.model.user;
 
 
 import com.shopping.electroshopping.model.cart.Cart;
+import com.shopping.electroshopping.model.order.Order;
+import com.shopping.electroshopping.model.referaloffer.ReferalOffer;
 import com.shopping.electroshopping.model.role.Role;
+import com.shopping.electroshopping.model.wallet.Wallet;
+import com.shopping.electroshopping.model.wishlist.WishListItem;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,19 +28,30 @@ public class User {
     private long id;
     @Column (name="user_name")
     private String userName;
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
+   @NotNull
     private String email;
     @Column (name="password")
     private String password;
     @Column(name="phone_number")
     private String phoneNumber;
     private boolean isBlocked;
-
+    private boolean verified;
     private String otp;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<UserAddress> addresses;
     @OneToMany(mappedBy = "user",cascade =CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Cart> carts;
+    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Order> orders;
+    @OneToOne(mappedBy = "user",cascade =CascadeType.ALL,fetch = FetchType.LAZY)
+    private  Wallet wallets;
+    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<WishListItem> wishListItems;
+    @OneToMany(mappedBy = "referrer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<ReferalOffer> referredOffers;
+    @OneToMany(mappedBy = "referredCustomer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<ReferalOffer> receivedOffers;
 
 
     public Long getId() {
@@ -44,10 +60,11 @@ public class User {
 
 
 
-    public User(String userName, String email, String password,String phoneNumber, Collection<Role> roles) {
+    public User(String userName, String email, String password,String phoneNumber,String otp, Collection<Role> roles) {
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.otp=otp;
         this.phoneNumber=phoneNumber;
         this.roles = roles;
     }

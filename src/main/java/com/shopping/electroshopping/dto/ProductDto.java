@@ -16,6 +16,7 @@ import lombok.Setter;
       private Long categoryId;
 
       private String imageName;
+   private Integer stock;
 
 
 

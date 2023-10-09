@@ -1,4 +1,4 @@
-package com.shopping.electroshopping.model;
+package com.shopping.electroshopping.model.order;
 
 import com.shopping.electroshopping.model.user.User;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "orders")
-public class order {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderID;
@@ -23,9 +25,15 @@ public class order {
     @JoinColumn(name = "user_id")
     private User user;
     @Column(name = "order_date")
-    private Date orderDate;
+    private LocalDateTime orderDate;
     @Column(name = "total_amount")
     private int totalAmount;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    private List<OrderItems> orderItems;
+    @Column(name = "payment_method")
+    private String paymentMethod;
+    @Column(name = "status")
+    private String status;
+
+
 }

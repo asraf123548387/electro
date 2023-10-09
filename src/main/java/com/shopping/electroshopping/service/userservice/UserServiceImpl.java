@@ -33,8 +33,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserAddressRepository userAddressRepository;
 
-    public UserServiceImpl(UserRepository customerRepository) {
-        this.userRepository = customerRepository;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    @Override
+    public User save(UserSignUpDto signUpDto) {
+        User customer=new User(signUpDto.getUserName(),signUpDto.getEmail(),
+                passwordEncoder.encode(signUpDto.getPassword()),signUpDto.getPhoneNumber(),
+                signUpDto.getOtp(),Arrays.asList(new Role("ROLE_USER")));
+        return userRepository.save(customer);
     }
 
 
@@ -59,11 +66,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public User save(UserSignUpDto signUpDto) {
-        User customer=new User(signUpDto.getUserName(),signUpDto.getEmail(), passwordEncoder.encode(signUpDto.getPassword()),signUpDto.getPhoneNumber(),Arrays.asList(new Role("ROLE_USER")));
-        return userRepository.save(customer);
-    }
+
+
+
+
+
 
     @Override
     public void blockUser(Long id) {
@@ -107,7 +114,27 @@ public UserAddress addUserAddress(UserAddressDto userAddressDto)
     return userAddressRepository.save(userAddress);
 }
 
+    @Override
+    public void editUserAddressInCheckOut(long id, UserAddressDto userAddressDto) {
 
+        UserAddress userAddress=userAddressRepository.findById(id).orElse(null);
+        if(userAddress!=null)
+        {
+            userAddress.setStreetDetails(userAddressDto.getStreetDetails());
+            userAddress.setCityName(userAddressDto.getCityName());
+            userAddress.setAddressPhoneNumber(userAddressDto.getAddressPhoneNumber());
+            userAddress.setPostalCode(userAddressDto.getPostalCode());
+            userAddress.setState(userAddress.getState());
+            userAddressRepository.save(userAddress);
+        }
+    }
+
+//    @Override
+//    public void saveUser(User user) {
+//        user.setRoles(Arrays.asList(new Role("ROLE_USER")));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        userRepository.save(user);
+//    }
 
 
     public List<User> getCustomerByName(String email) {
@@ -124,13 +151,53 @@ public UserAddress addUserAddress(UserAddressDto userAddressDto)
             user.setUserName(updateProfile.getUserName());
             user.setEmail(updateProfile.getEmail());
             user.setPhoneNumber(updateProfile.getPhoneNumber());
-            user.setPassword(passwordEncoder.encode(updateProfile.getPassword()));
+//            user.setPassword(passwordEncoder.encode(updateProfile.getPassword()));
             userRepository.save(user);
         }
 
     }
 
+// user is already registred
+public boolean isEmailAlreadyRegistered(String email) {
+    // Use the UserRepository to check if the email is already registered
+    return userRepository.existsByEmail(email);
+}
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+
+    }
+
+    public boolean verifyOtpAndResetPassword(String otp, String newPassword) {
+        User user = userRepository.findByOtp(otp);
+
+        if (user != null) {
+            // Update the user's password
+            user.setPassword(passwordEncoder.encode(newPassword));
+
+            // Clear the OTP (optional)
+            user.setOtp(null);
+
+            // Save the updated user entity to the database
+            userRepository.save(user);
+
+            // Password reset was successful
+            return true;
+        } else {
+            // Invalid OTP or user not found
+            return false;
+        }
+    }
+
+    public void changePassword(Long userId, String newPassword) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            // Update the user's password
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+
+    }
+    }
 }
 
 

@@ -3,8 +3,9 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Add Products</title>
+    <title>Add Products Offer</title>
 
+    <!-- Include Bootstrap CSS via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <style>
@@ -36,53 +37,49 @@
                 You've successfully registered to our awesome app!
             </div>
 
-            <h1 class="mb-4">Add Products</h1>
+            <h1 class="mb-4">Add Products Offer</h1>
 
-            <form th:action="@{/admin/addProducts}" method="post" th:object="${product}">
-                <!--                <input type="hidden" th:field="*{id}" />-->
+            <form th:action="@{/admin/addProductOffer}" method="post" th:object="${productOffer}">
                 <div class="form-group">
-                    <label for="productName">Product Name</label>
-                    <input id="productName" class="form-control" th:field="*{productName}" required autofocus>
-                </div>
-
-                <div class="form-group">
-                    <label for="price">Price</label>
-                    <input id="price" class="form-control" th:field="*{price}" required type="number">
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <input id="description" class="form-control" th:field="*{description}" required>
-                </div>
-                <div class="form-group">
-                    <label for="image">Product Image</label>
-                    <input id="image" value="./img/" class="form-control" type="text" name="image" th:field="*{imageName}" accept="image/*" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">ProductQuantity</label>
-                    <input id="productQuantity" class="form-control" th:field="*{stock}" required>
-                </div>
-                <div class="form-group">
-                    <label >Select Category</label>
-                    <select class="form-control" th:field="*{categoryId}" name="category">
-                        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+                    <label>Select Product</label>
+                    <select class="form-control" th:field="*{product.id}"> <!-- Correctly bind to product.id -->
+                        <option th:each="product : ${productList}" th:value="${product.id}" th:text="${product.productName}">
                         </option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Add Product</button>
+                    <label for="discountAmount">Discount Percentage</label>
+                    <input id="discountAmount" class="form-control" th:field="*{discountAmount}" required autofocus>
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label for="expirationDate">Expiration Date</label>-->
+<!--                    <input id="expirationDate" class="form-control" th:field="*{expirationDate}" required type="date">-->
+<!--                </div>-->
+                <div class="form-group">
+                    <label for="expirationDate">Expiration Date</label>
+                    <input type="datetime-local" class="form-control" id="expirationDate" th:field="*{expirationDate}" required>
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label for="createDate">Create Date</label>-->
+<!--                    <input id="createDate" class="form-control" th:field="*{createDate}" required type="date">-->
+<!--                </div>-->
+                <div class="form-group">
+                    <label for="expirationDate">Create Date</label>
+                    <input type="datetime-local" class="form-control" id="createDate" th:field="*{createDate}" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Add Product Offer</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- jQuery script tag using Thymeleaf -->
+<!-- Include jQuery and Bootstrap JavaScript via CDN -->
 <script th:src="|https://code.jquery.com/jquery-3.6.0.min.js|"></script>
-
-<!-- Bootstrap script tag using Thymeleaf -->
 <script th:src="|https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js|"></script>
 </body>
 </html>
-

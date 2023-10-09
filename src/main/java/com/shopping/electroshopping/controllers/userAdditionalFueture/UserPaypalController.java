@@ -4,12 +4,13 @@ import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.shopping.electroshopping.dto.OrderDtoPaypal;
-import com.shopping.electroshopping.dto.Orderdto;
 import com.shopping.electroshopping.model.cart.Cart;
+import com.shopping.electroshopping.model.cart.CartItems;
 import com.shopping.electroshopping.model.user.User;
+import com.shopping.electroshopping.repository.CartItemsRepository;
 import com.shopping.electroshopping.repository.CartRepository;
 import com.shopping.electroshopping.repository.UserRepository;
-import com.shopping.electroshopping.service.PaypalService;
+import com.shopping.electroshopping.service.paymentservice.PaypalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,14 +21,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
-public class PaypalController {
+public class UserPaypalController {
     @Autowired
   PaypalService paypalService;
     @Autowired
     UserRepository userRepository;
     @Autowired
     CartRepository cartRepository;
+    @Autowired
+    CartItemsRepository cartItemsRepository;
+
     public static final String SUCCESS_URL="pay/success";
     public static final String CANCEL_URL="pay/cancel";
 
@@ -37,10 +43,12 @@ public class PaypalController {
         String email = authentication.getName();
         User user = userRepository.findByEmail(email);
         Cart userCart = cartRepository.findByUser(user);
+      List<CartItems> cartItems = cartItemsRepository.findByCartUser(user);
 
         if (userCart != null) {
             double total = userCart.getTotal();
             model.addAttribute("amount", total);
+            model.addAttribute("cartItems", cartItems);
         }
             return "/payment/payment";
 

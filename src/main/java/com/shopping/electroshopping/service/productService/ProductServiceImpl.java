@@ -7,16 +7,10 @@ import com.shopping.electroshopping.repository.CategoryRepository;
 import com.shopping.electroshopping.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -37,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
         product.setProductName(productDto.getProductName());
         product.setPrice(productDto.getPrice());
         product.setDescription(productDto.getDescription());
+        product.setStock(productDto.getStock());
         product.setImageName(productDto.getImageName());
         Category category = categoryRepository.findById(productDto.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
@@ -61,9 +56,11 @@ public class ProductServiceImpl implements ProductService {
          product.setImageName(productDto.getImageName());
          product.setProductName(productDto.getProductName());
          product.setPrice(productDto.getPrice());
+         product.setStock(productDto.getStock());
          product.setCategory(product.getCategory());
          product.setDescription(productDto.getDescription());
         }
+
         productRepository.save(product);
 
 
@@ -85,5 +82,9 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    public Product saveProduct(Product product) {
+
+        return productRepository.save(product);
     }
+}
 

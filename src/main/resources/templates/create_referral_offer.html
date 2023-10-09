@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Create Referral Offer</title>
 </head>
 <body>
-$END$
+<h1>Create Referral Offer</h1>
+<form th:action="@{/create}" method="post">
+    <input type="hidden" name="referrerUserId" th:value="${referrerUserId}" />
+    Referred User ID: <input type="text" name="referredUserId" /><br />
+    <input type="submit" value="Create Referral Offer" />
+</form>
+<p th:if="${param.success}">Referral offer created successfully.</p>
 </body>
 </html>

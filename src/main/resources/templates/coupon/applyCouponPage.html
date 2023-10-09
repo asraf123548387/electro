@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+                    <form th:action="@{user/applyCoupon}" method="post" th:object="${cart}">
+
+                        <div class="form-group">
+                            <label for="couponCode">Coupon Code:</label>
+                            <input type="text" id="couponCode" name="couponCode"  />
+                            <button type="submit">Apply Coupon</button>
+                        </div>
+                    </form>
 </body>
 </html>
