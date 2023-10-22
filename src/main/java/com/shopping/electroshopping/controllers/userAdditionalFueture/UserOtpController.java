@@ -32,8 +32,12 @@ public class UserOtpController {
         return "/otp/verification";
     }
     @PostMapping("/verify")
-    public String processVerification(@RequestParam("otp") String enteredOTP, Principal principal, Model model) {
-        String userEmail = principal.getName();
+    public String processVerification(
+            @RequestParam("otp") String enteredOTP,
+            @RequestParam("email") String userEmail,
+            Model model
+    ) {
+
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(userEmail));
 
         if (optionalUser.isPresent()) {

@@ -17,11 +17,11 @@ import java.util.List;
 @Table(name = "cart")
 
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     private Long cartId;
-
     private double total;
     @ManyToOne
     @JoinColumn(name ="user_id")
@@ -29,4 +29,8 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private List<CartItems> cartItems;
 
+
 }
+
+
+

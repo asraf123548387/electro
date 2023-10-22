@@ -34,18 +34,27 @@ public class UserController {
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
+
         User user = userRepository.findByEmail(email);
+
         Long userId = user.getId();
+//        String code=userService.generateCode();
+        String code=user.getReferralCode();
+        user.setReferralCode(code);
+//        userRepository.save(user);
         String usernamee=user.getUserName();
         String emailid=user.getEmail();
         String phone=user.getPhoneNumber();
         List<UserAddress> addresses = user.getAddresses();
+
+
 
         model.addAttribute("user_id",userId);
         model.addAttribute("username",usernamee);
         model.addAttribute("email",emailid);
         model.addAttribute("phone",phone);
         model.addAttribute("addresses",addresses);
+        model.addAttribute("referralCode",code);
 
 
 

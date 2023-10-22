@@ -6,11 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
     <title>Electro - HTML Ecommerce Template</title>
-
     <!-- Google font -->
     <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,500,700}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}">
 
     <!-- Bootstrap -->
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
@@ -35,159 +34,11 @@
     <script th:src="@{/js/respond.min.js}"></script>
     <![endif]-->
 
-    <style>
-        body {
-            margin-top: 20px;
-            font-family: Arial, Helvetica, sans-serif;
-               background-color: #f5f5f5;
-        }
-
-        .main {
-            padding: 15px;
-        }
-
-
-         .sidebar {
-        background-color: #333;
-        color: white;
-        height: 100%;
-    }
-
-        .sidebar a {
-            margin-left: 10px;
-            display: block;
-            color: black;
-            padding: 10px;
-            font-size: 18px;
-            text-decoration: none;
-              transition: background-color 0.3s;
-        }
-         .sidebar a:hover {
-        background-color: red;
-    }
-
-        .card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-             background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-         .rounded-circle {
-        border-radius: 50%;
-    }
-
-        .content {
-            background-color: white;
-        }
-
-        .card.text-center {
-            background-color: #fff;
-            border-radius: 10px;
-  padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .row hr {
-            margin-top: 15px;
-            margin-bottom: 15px;
-            border: 0;
-            border-top: 1px solid #eee;
-        }
-
-        .row h4 {
-            font-size: 18px;
-            margin-left:15px;
-        }
-
-
-
-        .text-secondary {
-            color: #888;
-        }
-
-        /* Style the Addresses section */
-.mb-3 {
-    background-color: #f7f7f7;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-/* Style the Addresses header */
-h4 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-/* Style the Address list */
-.address-list {
-    list-style: none;
-    padding: 0;
-}
-
-/* Style each Address item */
-.address-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-/* Style the Address checkbox */
-.address-checkbox {
-    margin-right: 10px;
-}
-
-/* Style the Edit link */
-.edit-link {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.delete-link {
-    color: red;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* Style the Add New Address button */
-.add-address-link {
-    text-align: center;
-    display: block;
-    margin-top: 20px;
-}
-
-/* Style the Black button */
-.black-button {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.black-button:hover {
-    background-color: #555;
-}
-
-    </style>
 </head>
 <body>
 <!-- HEADER -->
 <header>
     <!-- TOP HEADER -->
-
-
     <!-- MAIN HEADER -->
     <div id="header">
         <!-- container -->
@@ -260,23 +111,19 @@ h4 {
 <!-- SECTION -->
 <!--<li ></li>-->
 <div class="container">
-    <div class="main">
-
     <div class="row">
-        <div class="col-md-4 mt-1">
+        <div class="col-md-4">
+            <!-- Sidebar Card -->
             <div class="card text-center sidebar">
                 <div class="card-body">
-                    <img th:src="@{/img/user1.png}"  class="rounded-circle" width="150">
-
-
+                    <img th:src="@{/img/user1.png}" class="rounded-circle" width="150">
                     <div class="mt-3">
-
                         <hr>
                         <a th:href="@{/}">HOME</a>
-<hr>
-                       <a th:href="@{/user/addUserAddress}">ADD ADDRESS</a>
-<hr>
-                       <a th:href="@{/logout}" sec:authorize="isAuthenticated()">LOGOUT</a>
+                        <hr>
+                        <a th:href="@{/user/addUserAddress}">ADD ADDRESS</a>
+                        <hr>
+                        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">LOGOUT</a>
                         <hr>
                         <a th:href="@{/user/updateProfile/{user_id}(user_id=${user_id})}">EDIT PROFILE</a>
                         <hr>
@@ -287,71 +134,86 @@ h4 {
                 </div>
             </div>
         </div>
-           <div class="col-md-8 mt-1">
-               <div class="card mb-3 content">
-                   <h1 class="m-1 pt-3" style="color:black;margin-left:15px;"> About</h1>
-                   <hr>
-                   <div class="card-body">
-                       <div class="row">
-                           <div class="col-md-3">
-                               <h4 style="color:black;"> User name</h4>
-                           </div>
-                           <div class="col-md-9 text-secondary">
-                               <h4 style="color:black;" th:text="${username}">Ahammed Ahraf k</h4>
-
-                           </div>
-                       </div>
-                       <hr>
-                       <div class="row">
-                           <div class="col-md-3">
-                               <h4 style="color:black;">Email</h4>
-                           </div>
-                           <div class="col-md-9 text-secondary">
-                               <h4 style="color:black;" th:text="${email}">Abc@gmail</h4>
-                           </div>
-                       </div>
-                       <hr>
-                       <div class="row">
-                           <div class="col-md-3">
-                               <h4 style="color:black;"> Phone</h4>
-                           </div>
-                           <div class="col-md-9 text-secondary">
-                               <h4 style="color:black;"  th:text="${phone}">7994207281</h4>
-                           </div>
-                       </div>
-                       <hr>
-
-                       <div class="mb-3">
-                           <h4>Addresses</h4>
-                           <ul class="address-list">
-                               <li th:each="address, addressIndex : ${addresses}">
-                                   <div class="address-item">
-
-                                       <div class="address-details">
-                                           <span th:text="${address.streetDetails}"></span>,
-                                           <span th:text="${address.cityName}"></span>,
-                                           <span th:text="${address.state}"></span>,
-                                           <span th:text="${address.postalCode}"></span>
-                                       </div>
-                                       <a th:href="@{/user/editUserAddressInCheckOut/{id}(id=${address.userAddressID})}" class="edit-link">Edit</a>
-                                       <a th:href="@{/user/deleteUserAddressInCheckOut/{id}(id=${address.userAddressID})}" class="delete-link">Delete</a>
-                                   </div>
-                               </li>
-                           </ul>
-
-                       </div>
-
-
-                   </div>
-
-
-                   </div>
-               </div>
-
-           </div>
+        <div class="col-md-8">
+            <!-- User Information Card -->
+            <div class="card mb-3 content">
+                <h1 class="m-1 pt-3" style="color: black; margin-left: 15px;"> About</h1>
+                <hr>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4 style="color: black;"> User name</h4>
+                        </div>
+                        <div class="col-md-9 text-secondary">
+                            <h4 style="color: black;" th:text="${username}">Ahammed Ahraf k</h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4 style="color: black;">Email</h4>
+                        </div>
+                        <div class="col-md-9 text-secondary">
+                            <h4 style="color: black;" th:text="${email}">Abc@gmail</h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4 style="color: black;"> Phone</h4>
+                        </div>
+                        <div class="col-md-9 text-secondary">
+                            <h4 style="color: black;" th:text="${phone}">7994207281</h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <h4>Addresses</h4>
+                        <ul class="address-list">
+                            <li th:each="address, addressIndex : ${addresses}">
+                                <div class="address-item">
+                                    <div class="address-details">
+                                        <span th:text="${address.streetDetails}"></span>,
+                                        <span th:text="${address.cityName}"></span>,
+                                        <span th:text="${address.state}"></span>,
+                                        <span th:text="${address.postalCode}"></span>
+                                    </div>
+                                    <a th:href="@{/user/editUserAddressInCheckOut/{id}(id=${address.userAddressID})}" class="edit-link">Edit</a>
+                                    <a th:href="@{/user/deleteUserAddressInCheckOut/{id}(id=${address.userAddressID})}" class="delete-link">Delete</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Referral Code Card -->
+            <div class="card" style="margin-top:10px;">
+                <div class="card-header">
+                    <h3>Referral Code</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Your unique referral code:
+                        <span class="referral-code" th:text="${referralCode}">ABCD123</span>
+                    </p>
+                    <p class="card-text">
+                        Share this code with your friends and earn Rs.100!
+                    </p>
+                    <div class="share-buttons">
+                        <!-- Add social media sharing buttons here if desired -->
+                        <a href="#" class="btn btn-primary">Share on Facebook</a>
+                        <a href="#" class="btn btn-info">Share on Twitter</a>
+                        <a href="#" class="btn btn-success">Share via Email</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div>
+
+
+<!-- /REFERRAL CARD -->
+
 <!-- FOOTER -->
 <footer id="footer">
     <!-- top footer -->

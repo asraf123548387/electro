@@ -64,11 +64,11 @@ public class UserCartController {
 
             // Create a CartItem
             Product product = productService.getProductById(productId);
-
+            double discountedPrice =productService.calculateDiscountPrice(product);
             CartItems cartItem = new CartItems();
             cartItem.setProduct(product);
             cartItem.setQuantity(1); // Set the quantity as needed
-            cartItem.setPrice(product.getPrice());// Set the price based on the product's price
+            cartItem.setPrice(discountedPrice);// Set the price based on the product's price
 
             // Save the Cart entity before associating it with CartItems
             cartRepository.save(userCart);

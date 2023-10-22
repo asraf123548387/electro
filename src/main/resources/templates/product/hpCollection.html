@@ -159,23 +159,44 @@
                         <div id="tab1" class="tab-pane active">
                             <div class="products-slick" data-nav="#slick-nav-1">
                                 <!-- product -->
-                                <div class="product"  th:each="product, iterStat : ${listProducts}" th:limit="4">
-                                    <a th:href="@{/user/productView(productId=${product.Id})}">
-                                        <div class="product-img">
-                                            <!--                                       <img th:text="${product.imageName}" src="./img/product06.png" alt="">&ndash;&gt;-->
+                                <div class="product" th:each="product, iterStat : ${listProducts}" th:limit="4">
+                                    <a th:href="@{/user/productView(productId=${product.id})}">
+                                        <div class="product-img" style="position: relative;">
+                                            <!-- Product Image -->
                                             <img th:src="${product.imageName}" alt="Product Image">
+
+                                            <!-- Discount Badge -->
+                                            <div class="discount-badge" th:if="${product.offers != null and not #lists.isEmpty(product.offers)}"
+                                                 style="position: absolute; top: 0; right: 0; background-color: #FF0000; color: #FFFFFF; padding: 5px 10px; font-size: 12px;">
+                                                <span th:text="${product.offers[0].discountAmount}"></span>% OFF
+                                            </div>
                                         </div>
                                         <div class="product-body">
                                             <p class="product-category" th:text="${product.category.name}">Category</p>
-                                            <h3 class="product-name" th:text="${product.productName}" ><a href="#" >product name goes here</a></h3>
-                                            <h4>₹<span class="product-price" th:text="${product.price}">980.00</span></h4>
-                                        </div>
-                                        <div class="add-to-cart">
-                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                            <h3 class="product-name" th:text="${product.productName}">
+                                                <a href="#">product name goes here</a>
+                                            </h3>
+
+                                            <!-- Calculate the discounted price and display it -->
+                                            <span th:if="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <strike>
+                                                    <p>₹<span class="product-price" th:text="${product.price}">980.00</span></p>
+                                                </strike>
+                                              <h6>₹<span class="product-price" th:text="${product.price - (product.price * product.offers[0].discountAmount / 100)}"></span></h6>
+                                              </span>
+                                            <span th:unless="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <h6>₹<span class="product-price" th:text="${product.price}">980.00</span></h6>
+                                            </span>
                                         </div>
                                     </a>
+                                    <div class="add-to-cart">
+                                        <a th:href="@{/user/addToWishList(productId=${product.id})}">
+                                            <button class="add-to-cart-btn"><i class="fa fa-heart"></i>
+                                                add to wishlist
+                                            </button>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
 
                         </div>
                         <!-- /tab -->

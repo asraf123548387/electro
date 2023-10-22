@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
     <meta charset="UTF-8">
     <title>Users List</title>
@@ -13,20 +13,32 @@
     </style>
     <script>
         function toggleBlockUnblock(button) {
-            const confirmation = confirm('Are you sure you want to toggle the block/unblock for this user?');
-            if (confirmation) {
-                if (button.innerText === "Block") {
-                    button.innerText = "Unblock";
-                    button.classList.remove("btn-primary");
-                    button.classList.add("btn-danger");
-                } else {
-                    button.innerText = "Block";
-                    button.classList.remove("btn-danger");
-                    button.classList.add("btn-primary");
-                }
-            }
-            return false;
-        }
+     const confirmation = confirm('Are you sure you want to toggle the block/unblock for this user?');
+     if (confirmation) {
+         const url = button.getAttribute("th:href");
+         fetch(url, { method: 'GET' })
+             .then(response => response.json())
+             .then(data => {
+                 if (data.success) {
+                     if (button.innerText === "Block") {
+                         button.innerText = "Unblock";
+                         button.classList.remove("btn-primary");
+                         button.classList.add("btn-danger");
+                     } else {
+                         button.innerText = "Block";
+                         button.classList.remove("btn-danger");
+                         button.classList.add("btn-primary");
+                     }
+                 }
+             })
+             .catch(error => {
+                 console.error("Error:", error);
+             });
+     }
+     return false;
+ }
+
+
     </script>
 </head>
 <body>
@@ -75,12 +87,12 @@
         <thead>
         <tr>
             <th>
-                <a th:href="@{'/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}}" class="btn btn-link text-decoration-none text-dark font-weight-bold">
+                <a  class="btn btn-link text-decoration-none text-dark font-weight-bold">
                     user Name</a>
             </th>
 
             <th>
-                <a th:href="@{'/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}" class="btn btn-link text-decoration-none text-dark font-weight-bold">
+                <a  class="btn btn-link text-decoration-none text-dark font-weight-bold">
                     Email</a>
             </th>
             <th> <p  class="btn btn-link text-decoration-none text-dark font-weight-bold">Actions </p></th>
@@ -92,39 +104,41 @@
 
             <td th:text="${user.email}"></td>
             <td>
-                <a th:if="${#authentication.principal.username != user.email}"
+                <a th:if="${#authentication.principal.username != user.email && !user.blocked}"
                    th:href="@{/admin/blockUser/{id}(id=${user.id})}"
                    class="btn btn-primary"
-                   onclick="return toggleBlockUnblock(this);">Block</a>
+                   onclick="toggleBlockUnblock(this);">Block</a>
+
+                <a th:if="${#authentication.principal.username != user.email && user.blocked}"
+                   th:href="@{/admin/unblockUser/{id}(id=${user.id})}"
+                   class="btn btn-danger"
+                   onclick="toggleBlockUnblock(this);">Unblock</a>
             </td>
+
         </tr>
 
         </tbody>
     </table>
 
-    <div th:if="${totalPages > 1}" class="row col-sm-10">
-        <div class="col-sm-2">
-            Total Rows: [[${totalItems}]]
-        </div>
-        <div class="col-sm-1">
-            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                <a th:if="${currentPage != i}"
-                   th:href="@{'/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
-                <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
-            </span>
-        </div>
-        <div class="col-sm-1">
-            <a th:if="${currentPage < totalPages}"
-               th:href="@{'/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
-            <span th:unless="${currentPage < totalPages}">Next</span>
-        </div>
+    <ul class="pagination">
+        <li th:if="${listUsers.hasPrevious()}" class="page-item">
+            <a th:href="@{'/admin/listUsers?page=0'}" class="page-link">First</a>
+        </li>
+        <li th:if="${listUsers.hasPrevious()}" class="page-item">
+            <a th:href="@{'/admin/listUsers?page=' + ${listUsers.number - 1}}" class="page-link">Previous</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, listUsers.totalPages - 1)}" th:class="${listUsers.number == i} ? 'active'">
+            <a th:href="@{'/admin/listUsers?page=' + ${i}}" class="page-link" th:text="${i + 1}"></a>
+        </li>
+        <li th:if="${listUsers.hasNext()}" class="page-item">
+            <a th:href="@{'/admin/listUsers?page=' + ${listUsers.number + 1}}" class="page-link">Next</a>
+        </li>
+        <li th:if="${listUsers.hasNext()}" class="page-item">
+            <a th:with="lastPage=${listUsers.totalPages - 1}" th:href="@{'/admin/listUsers?page=' + ${lastPage}}" class="page-link">Last</a>
+        </li>
+    </ul>
 
-        <div class="col-sm-1">
-            <a th:if="${currentPage < totalPages}"
-               th:href="@{'/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
-            <span th:unless="${currentPage < totalPages}">Last</span>
-        </div>
-    </div>
+
 </div>
 
 </body>

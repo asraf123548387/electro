@@ -30,16 +30,54 @@ background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 
 }
         .cancel-button {
     text-decoration: none;
-    background-color: #cd9cf2; /* Set your desired background color */
+    color: #cd9cf2; /* Set your desired background color */
     color: white; /* Text color */
-    padding: 10px 20px; /* Adjust padding as needed */
+    padding: 5px 5px; /* Adjust padding as needed */
     border: none;
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 3px; /* Rounded corners */
     cursor: pointer;
+
+    /* margin-left: 32px; */
+    position: relative;
+    left: 225px;
     transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 
 .cancel-button:hover {
+    background-color: #ebbceb; /* Change color on hover */
+}
+                .cancel-button1 {
+    text-decoration: none;
+    color: #cd9cf2; /* Set your desired background color */
+    color: white; /* Text color */
+    padding: 5px 5px; /* Adjust padding as needed */
+    border: none;
+    border-radius: 3px; /* Rounded corners */
+    cursor: pointer;
+
+
+    position: relative;
+    left: 117px;
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.cancel-button1:hover {
+    background-color: #ebbceb; /* Change color on hover */
+}
+                        .cancel-button2 {
+    text-decoration: none;
+    color: #cd9cf2; /* Set your desired background color */
+    color: white; /* Text color */
+    padding: 5px 10px; /* Adjust padding as needed */
+    border: none;
+    border-radius: 3px; /* Rounded corners */
+    cursor: pointer;
+      position: relative;
+    left: 117px;
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.cancel-button2:hover {
     background-color: #ebbceb; /* Change color on hover */
 }
     </style>
@@ -58,6 +96,9 @@ background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <p class="small text-muted mb-0" th:text="${order.orderDate}">Receipt Voucher : 1KAU9-84UIL</p>
+                            <a th:href="@{/user/cancelOrder/{id}(id=${order.orderID})}"  class="cancel-button">  <button onclick="confirmCancel()">Cancel order</button>
+                            </a>
+                            <a th:href="@{/user/cancellOrder/{id}(id=${order.orderID})}"  class="cancel-button1"><button>Clear order</button></a>
                             <p class="small text-muted mb-0" th:text="${'ORDERID:'+order.orderID}">Receipt Voucher : 1KAU9-84UIL</p>
                         </div>
                         <div class="card shadow-0 border mb-4">
@@ -73,9 +114,9 @@ background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 
                                              <h5 > <span style="color: #a8729a;"  >YOUR ORDERS</span>!</h5>
                                          </div>
                                             <div>
-                                                <a th:href="@{/user/cancelOrder/{id}(id=${order.orderID})}"  class="cancel-button">  <button onclick="confirmCancel()">Cancel order</button>
-                                                </a>
-                                                <a th:href="@{/user/cancellOrder/{id}(id=${order.orderID})}"  class="cancel-button"><button>Clear order</button></a>
+<!--                                                <a th:href="@{/user/cancelOrder/{id}(id=${order.orderID})}"  class="cancel-button">  <button onclick="confirmCancel()">Cancel order</button>-->
+<!--                                                </a>-->
+                                                <a th:href="@{/user/downloadInvoice/{id}(id=${order.orderID})}"  class="cancel-button2"><button>Download Invoice</button></a>
                                             </div>
                                         </div>
 

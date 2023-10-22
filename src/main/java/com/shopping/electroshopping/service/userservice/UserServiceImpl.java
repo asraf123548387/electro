@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -41,6 +42,7 @@ public class UserServiceImpl implements UserService {
         User customer=new User(signUpDto.getUserName(),signUpDto.getEmail(),
                 passwordEncoder.encode(signUpDto.getPassword()),signUpDto.getPhoneNumber(),
                 signUpDto.getOtp(),Arrays.asList(new Role("ROLE_USER")));
+//customer.setReferralCode(generateCode());
         return userRepository.save(customer);
     }
 
@@ -58,15 +60,13 @@ public class UserServiceImpl implements UserService {
            throw new DisabledException("User is blocked");
        }
 
+
        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
-       // return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getOtp(),mapRolesToAuthorities(user.getRoles()));
+
     }
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
-
-
-
 
 
 
@@ -129,12 +129,6 @@ public UserAddress addUserAddress(UserAddressDto userAddressDto)
         }
     }
 
-//    @Override
-//    public void saveUser(User user) {
-//        user.setRoles(Arrays.asList(new Role("ROLE_USER")));
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userRepository.save(user);
-//    }
 
 
     public List<User> getCustomerByName(String email) {
@@ -198,6 +192,36 @@ public boolean isEmailAlreadyRegistered(String email) {
 
     }
     }
+
+
+        public long getTotalNumberOfUsers() {
+            return userRepository.countUsers();
+        }
+
+    public String generateCode() {
+        int codeLength=6;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < codeLength; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            code.append(characters.charAt(randomIndex));
+        }
+
+        return code.toString();
+
+    }
+
+    public void toggleUser(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setBlocked(!user.isBlocked());
+            userRepository.save(user);
+        }
+    }
+
 }
+
 
 

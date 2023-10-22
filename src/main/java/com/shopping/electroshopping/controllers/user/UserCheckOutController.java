@@ -46,6 +46,22 @@ public class UserCheckOutController {
       User user = userRepository.findByEmail(email);
 
       List<UserAddress> addressList = user.getAddresses();
+      if (!addressList.isEmpty()) {
+         // 3. Set the first address as the default
+         UserAddress defaultAddress = addressList.get(0);
+         defaultAddress.setDefaultAddress(true);
+
+         // 4. Set all other addresses as not default
+         for (UserAddress address : addressList) {
+            if (!address.equals(defaultAddress)) {
+               address.setDefaultAddress(false);
+            }
+         }
+
+         // 5. Save the changes to the database
+         userAddressRepository.saveAll(addressList);
+      }
+
       List<CartItems> cartItems = cartItemsRepository.findByCartUser(user);
 
       double totalPrice = cartItemsRepository.sumCartItemsPriceByUser(user);
@@ -65,6 +81,7 @@ public class UserCheckOutController {
             // You can return an error message or handle it as needed
             // For example, you can redirect to a page showing the error message.
             String errorMessage = "Insufficient stock for product: " + product.getProductName();
+
             redirectAttributes.addFlashAttribute("error", errorMessage);
             return "redirect:/user/addToCartOutOfStock";
          }

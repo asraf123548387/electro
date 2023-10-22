@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>Invoice</title>
+    <style>
+        /* Define your CSS styles here for the invoice */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .invoice {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+        .invoice-header {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .invoice-total {
+            text-align: right;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="invoice">
+    <div class="invoice-header">
+        <h1>Invoice</h1>
+    </div>
+    <div class="invoice-details">
+<!--        <p><strong>Order Number:</strong> <span th:text="${order.orderId}"></span></p>-->
+        <p><strong>Order Date:</strong> <span th:text="${order.orderDate}"></span></p>
+        <p><strong>Total Amount:</strong> <span th:text="${order.totalAmount}"></span></p>
+    </div>
+    <table class="invoice-table">
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${order.orderItems}">
+            <td th:text="${item.product.productName}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.unitPrice}"></td>
+            <td th:text="${item.quantity * item.unitPrice}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="invoice-total">
+        <p><strong>Total Amount:</strong> <span th:text="${order.totalAmount}"></span></p>
+    </div>
+</div>
+</body>
+</html>

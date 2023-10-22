@@ -1,5 +1,7 @@
 package com.shopping.electroshopping.model.user;
 
+import com.shopping.electroshopping.model.order.Order;
+import com.shopping.electroshopping.model.wallet.Wallet;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +25,10 @@ public class UserAddress {
     private String state;
     private String postalCode;
     private String addressPhoneNumber;
+    private boolean defaultAddress;
+
+    @OneToOne(mappedBy = "userAddress", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Order order;
 
     public void setUser(User user) {
         this.user = user;

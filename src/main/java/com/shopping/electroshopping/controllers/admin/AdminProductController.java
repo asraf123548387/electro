@@ -7,6 +7,8 @@ import com.shopping.electroshopping.repository.ProductRepository;
 import com.shopping.electroshopping.service.productService.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,28 +35,31 @@ public class AdminProductController {
     private CategoryRepository categoryRepository;
 
     @GetMapping("/productList")
-    public String ProductList(Model model)
-
+    public String ProductList(Model model, @RequestParam(defaultValue = "0") int page)
     {
+        int pageSize = 10; // Number of items per page
+        Page<Product> productsPage = productRepository.findAll(PageRequest.of(page, pageSize));
+        model.addAttribute("listProduct", productsPage);
 
-     List<Product> products=productRepository.findAll();
-     model.addAttribute("listproduct",products);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productsPage.getTotalPages());
 
-        return "/product/listProducts";
+        return "product/listProducts";
     }
+
     @ModelAttribute("product")
     public ProductDto productDto()
     {
         return new ProductDto();
     }
     @GetMapping("/addProducts")
-    public String addproductsForm(Model model)
+    public String addProductsForm(Model model)
     {
         model.addAttribute("categories",categoryRepository.findAll());
         return "/product/addProducts";
     }
     @PostMapping("/addProducts")
-    public String addProductstoDatabase(@ModelAttribute("product")ProductDto productDto )
+    public String addProductsToDatabase(@ModelAttribute("product")ProductDto productDto )
     {
 
 
@@ -91,13 +96,7 @@ public class AdminProductController {
     public String searchUser(@RequestParam("productName")String productName,Model model)
     {
         List<Product> list=productService.getProductByName(productName);
-        model.addAttribute("listproduct",list);
+        model.addAttribute("listProduct",list);
         return "/product/listProducts";
     }
-
-
-
-
-
-
 }

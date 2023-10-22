@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class UserOrderController {
     CartItemsRepository cartItemsRepository;
     @Autowired
     CartRepository cartRepository;
+
 @GetMapping("/orderPlaced")
     public String orderplaced(Model model) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,13 +57,18 @@ public class UserOrderController {
 
 
     LocalDateTime currentDateTime = LocalDateTime.now();
+    int orderMonth=currentDateTime.getMonthValue();
+    int orderYear=currentDateTime.getYear();
+
 
     Order userOrder = new Order();
 
     userOrder.setUser(user);
     userOrder.setPaymentMethod("COD");
     userOrder.setStatus("confirmed");
-    userOrder.setOrderDate(currentDateTime);
+    userOrder.setOrderDate(LocalDate.from(currentDateTime));
+    userOrder.setOrderMonth(orderMonth);
+    userOrder.setOrderYear(orderYear);
     userOrder.setTotalAmount((int) totalPrice);
     Order savedOrder = orderRepository.save(userOrder);
 
@@ -107,13 +114,17 @@ public class UserOrderController {
 
 
         LocalDateTime currentDateTime = LocalDateTime.now();
+        int orderMonth=currentDateTime.getMonthValue();
+        int orderYear=currentDateTime.getYear();
 
         Order userOrder = new Order();
 
         userOrder.setUser(user);
         userOrder.setPaymentMethod("Wallet");
         userOrder.setStatus("confirmed");
-        userOrder.setOrderDate(currentDateTime);
+        userOrder.setOrderDate(LocalDate.from(currentDateTime));
+        userOrder.setOrderMonth(orderMonth);
+        userOrder.setOrderMonth(orderYear);
         userOrder.setTotalAmount((int) totalPrice);
         Order savedOrder = orderRepository.save(userOrder);
 
@@ -176,4 +187,5 @@ model.addAttribute("total",newtotal);
     }
 
 }
+
 

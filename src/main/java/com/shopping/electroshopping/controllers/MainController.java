@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -22,12 +23,14 @@ public class MainController {
     {
         return "login";
     }
+    @Transactional
     @GetMapping("/")
     public String home(Model model)
 
     {
         List<Product> productList=productRepository.findAll();
-
+        List<Category> categoryList=categoryRepository.findAll();
+        model.addAttribute("listCategory",categoryList);
         model.addAttribute("listProducts",productList);
 
         return "index";

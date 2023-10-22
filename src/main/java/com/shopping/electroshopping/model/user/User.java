@@ -1,14 +1,10 @@
 package com.shopping.electroshopping.model.user;
-
-
 import com.shopping.electroshopping.model.cart.Cart;
 import com.shopping.electroshopping.model.order.Order;
-import com.shopping.electroshopping.model.referaloffer.ReferalOffer;
 import com.shopping.electroshopping.model.role.Role;
 import com.shopping.electroshopping.model.wallet.Wallet;
 import com.shopping.electroshopping.model.wishlist.WishListItem;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
@@ -38,6 +34,16 @@ public class User {
     private boolean isBlocked;
     private boolean verified;
     private String otp;
+
+    @Column(name = "referral_code", unique = true)
+    private String referralCode;
+
+    @Column(name = "referrer_id")
+    private Long referrerId;
+
+    @Column(name = "referral_reward")
+    private Integer referralReward;
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<UserAddress> addresses;
     @OneToMany(mappedBy = "user",cascade =CascadeType.ALL,fetch = FetchType.LAZY)
@@ -48,10 +54,7 @@ public class User {
     private  Wallet wallets;
     @OneToMany(mappedBy = "user",cascade =CascadeType.ALL,fetch = FetchType.LAZY)
     private List<WishListItem> wishListItems;
-    @OneToMany(mappedBy = "referrer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<ReferalOffer> referredOffers;
-    @OneToMany(mappedBy = "referredCustomer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<ReferalOffer> receivedOffers;
+
 
 
     public Long getId() {
@@ -67,6 +70,7 @@ public class User {
         this.otp=otp;
         this.phoneNumber=phoneNumber;
         this.roles = roles;
+
     }
     public User( String email,String otp, Collection<Role> roles) {
 
@@ -86,7 +90,10 @@ public class User {
 
     private Collection<Role> roles;
 
-
+    @Override
+    public String toString() {
+        return "User{id=" + id + ", username='" + userName + "', email='" + email + "'}";
+    }
 
 
 }

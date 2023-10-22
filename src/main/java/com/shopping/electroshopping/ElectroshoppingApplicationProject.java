@@ -18,5 +18,4 @@ public class ElectroshoppingApplicationProject {
 		SpringApplication.run(ElectroshoppingApplicationProject.class, args);
 	}
 
-
 }

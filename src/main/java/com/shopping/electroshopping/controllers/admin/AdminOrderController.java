@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 @Controller
@@ -35,7 +36,7 @@ public class AdminOrderController {
         return "order/orderList";
     }
     @GetMapping("/updateOrder/{id}")
-    public String updateOrder(@PathVariable("id")Long orderId,Model model)
+    public String updateOrder(@PathVariable("id")Long orderId, Model model)
     {
         Order order=orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + orderId));
         model.addAttribute("order",order);
@@ -43,9 +44,10 @@ public class AdminOrderController {
         return "/order/updateOrderStatus";
     }
     @PostMapping("/updateOrder/{id}")
-    public String updateStatus(@PathVariable("id") Long orderId, @ModelAttribute("order") Order orderdto)
+    public String updateStatus(@PathVariable("id") Long orderId, @ModelAttribute("order") Order orderdto, RedirectAttributes redirectAttributes)
     {
        orderService.editstatus(orderId,orderdto);
+       redirectAttributes.addFlashAttribute("hi","order status updated");
         return "redirect:/admin/orderList";
     }
 }

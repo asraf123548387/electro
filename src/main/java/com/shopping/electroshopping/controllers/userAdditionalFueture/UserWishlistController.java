@@ -1,8 +1,10 @@
 package com.shopping.electroshopping.controllers.userAdditionalFueture;
 
+import com.shopping.electroshopping.model.category.Category;
 import com.shopping.electroshopping.model.product.Product;
 import com.shopping.electroshopping.model.user.User;
 import com.shopping.electroshopping.model.wishlist.WishListItem;
+import com.shopping.electroshopping.repository.CategoryRepository;
 import com.shopping.electroshopping.repository.ProductRepository;
 import com.shopping.electroshopping.repository.UserRepository;
 import com.shopping.electroshopping.repository.WishListRepository;
@@ -31,6 +33,8 @@ public class UserWishlistController {
     private UserRepository userRepository;
     @Autowired
     private ProductServiceImpl productService;
+    @Autowired
+    private CategoryRepository categoryRepository;
     @GetMapping("/addToWishList")
     public String addToWishList(@RequestParam("productId") Long productId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -43,6 +47,10 @@ public class UserWishlistController {
          wishListItem.setUser(user);
          wishListItem.setProduct(product);
          wishListRepository.save(wishListItem);
+        List<Product> productList=productRepository.findAll();
+        List<Category> categoryList=categoryRepository.findAll();
+        model.addAttribute("listCategory",categoryList);
+        model.addAttribute("listProducts",productList);
          return "index";
 
   }

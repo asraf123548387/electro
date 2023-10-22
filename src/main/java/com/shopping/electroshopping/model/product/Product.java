@@ -3,6 +3,7 @@ package com.shopping.electroshopping.model.product;
 import com.shopping.electroshopping.model.cart.CartItems;
 import com.shopping.electroshopping.model.category.Category;
 //import com.shopping.electroshopping.model.productOffer.ProductOffer;
+import com.shopping.electroshopping.model.productOffer.ProductOffer;
 import com.shopping.electroshopping.model.wishlist.WishListItem;
 import lombok.*;
 
@@ -40,8 +41,8 @@ public class Product {
     private Category category;
     @Column(name = "image_name")
     private String imageName;
-//   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch=FetchType.LAZY)
-//   private List<ProductOffer> offers;
+   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+   private List<ProductOffer> offers;
 
     @Override
     public String toString() {

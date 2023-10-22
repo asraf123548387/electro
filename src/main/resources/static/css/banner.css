@@ -1,0 +1,9 @@
+.category-badge {
+    position: absolute;
+    top: 10px; /* Adjust the top position as needed */
+    right: 10px; /* Adjust the right position to move the badge to the top right corner */
+    background-color: #FF0000;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    border-radius: 5px;
+}

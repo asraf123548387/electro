@@ -21,4 +21,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query("SELECT u FROM User u WHERE u.otp = :otp")
     User findByOtp(@Param("otp") String otp);
+    @Query("SELECT COUNT(u) FROM User u")
+    long countUsers();
+
+    long countByIsBlocked(boolean b);
 }

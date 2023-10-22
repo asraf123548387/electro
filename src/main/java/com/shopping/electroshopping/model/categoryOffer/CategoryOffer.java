@@ -26,12 +26,19 @@ public class CategoryOffer {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    @PositiveOrZero(message = "Discount amount must be non-negative")
+
     private double discountAmount;
-    @FutureOrPresent(message = "Expiration date is must be in the future or present")
-    private LocalDate expirationDate;
-    @CreatedDate
-    private LocalDateTime createdDate;
+
+    private String expirationDate;
+
+    private String createdDate;
+    public Long getCategoryId()
+    {
+        if(category!=null){
+            return category.getId();
+        }
+        return null;
+    }
 
 
 }

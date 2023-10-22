@@ -1,0 +1,37 @@
+ body{
+    margin-top:20px;
+    background:#eee;
+}
+.ui-w-40 {
+    width: 50px !important;
+    height: auto;
+}
+
+.card{
+    box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+}
+
+.ui-product-color {
+    display: inline-block;
+    overflow: hidden;
+    margin: .144em;
+    width: .875rem;
+    height: .875rem;
+    border-radius: 10rem;
+    -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
+    vertical-align: middle;
+}
+    .custom-btn {
+  background-color: white; /* Red background color */
+  color: black; /* White text color */
+  border: 1px; /* Remove the button border */
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 20px; /* Add some border radius for rounded corners */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+/* Hover effect for the button */
+.custom-btn:hover {
+  background-color: black; /* Darker red on hover */
+}

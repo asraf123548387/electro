@@ -22,7 +22,8 @@ public class userRazorpayController {
 
  @GetMapping("/razorPay")
     public String showPaymentForm() {
-        return "/payment/paymentForm"; // This should match the name of your HTML template file
+
+     return "redirect:" + "https://rzp.io/l/Ypz4fpK"; // This should match the name of your HTML template file
     }
 
     @PostMapping("/create-razorpay-order")

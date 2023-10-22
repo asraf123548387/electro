@@ -1,7 +1,9 @@
 package com.shopping.electroshopping.service.orderService;
 
 import com.shopping.electroshopping.model.order.Order;
+import com.shopping.electroshopping.model.order.OrderItems;
 import com.shopping.electroshopping.model.wallet.Wallet;
+import com.shopping.electroshopping.repository.OrderItemsRepository;
 import com.shopping.electroshopping.repository.OrderRepository;
 import com.shopping.electroshopping.repository.WalletRepository;
 import com.shopping.electroshopping.service.wallet.WalletServiceImpl;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,6 +22,8 @@ public class OrderServiceImpl implements OrderService{
     WalletServiceImpl walletService;
 @Autowired
     WalletRepository walletRepository;
+@Autowired
+    OrderItemsRepository orderItemsRepository;
 
     @Override
     @Transactional
@@ -54,4 +59,24 @@ public class OrderServiceImpl implements OrderService{
     }
 
 
+    public Double getTotalOrderAmount() {
+        return orderRepository.getTotalOrderAmount();
+    }
+    public Double getTotalOrderAmountForToday() {
+        LocalDate todayDate = LocalDate.now();
+        return orderRepository.getTotalOrderAmountForToday(todayDate);
+    }
+
+    public Double getTotalOrderAmountForOctober() {
+        return orderRepository.getTotalOrderAmountForOctober();
+    }
+
+    public Double getTotalOrderAmountForNovember() {
+        Double totalAmount = orderRepository.getTotalOrderAmountForNovember();
+
+        if (totalAmount == null) {
+            totalAmount = 0.0;
+        }
+        return totalAmount;
+    }
 }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sales Report with Order Summary</title>
+    <style>
+        /* Add your CSS styles here */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        th:first-child, td:first-child {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Sales Report with Order Summary</h1>
+
+<p>Total Quantity Sold: <span th:text="${totalQuantitySold}"></span></p>
+<p>Total sale: <span th:text="${totalSales}"></span></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Product</th>
+        <th>Quantity Sold</th>
+        <th>Total Sales</th>
+        <th>Order Summary</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="sale : ${salesData}">
+        <td th:text="${sale.productName}">Product Name</td>
+        <td th:text="${sale.quantitySold}">0</td>
+        <td th:text="${sale.totalSales}">0.00</td>
+        <td>
+            <ul>
+                <li>
+                    Order ID: <span th:text="${sale.orderId}"></span>
+                    Order Date: <span th:text="${sale.orderDate}"></span>
+                    Order Total: <span th:text="${sale.orderTotal}"></span>
+                    <!-- Add more order details as needed -->
+                </li>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

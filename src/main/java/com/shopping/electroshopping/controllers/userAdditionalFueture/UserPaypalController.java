@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -68,8 +69,9 @@ for(Links link:payment.getLinks())
 return "redirect:/home";
     }
     @GetMapping(value = CANCEL_URL)
-    public String cancelPay() {
-        return "cancel";
+    public String cancelPay(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("not","payment not successful");
+        return "redirect:/user/checkOut";
     }
 
     @GetMapping(value = SUCCESS_URL)

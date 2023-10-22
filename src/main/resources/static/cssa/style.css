@@ -120,7 +120,12 @@
     }
 }
 
-
+a.btn.btn-primary.hi {
+    position: relative;
+    left: 163px;
+    /* top: 11px; */
+    bottom: 37px;
+}
 /*** Navbar ***/
 .sidebar .navbar .navbar-nav .nav-link {
     padding: 7px 20px;

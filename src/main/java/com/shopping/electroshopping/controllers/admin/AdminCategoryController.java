@@ -73,8 +73,6 @@ public class AdminCategoryController {
      categoryService.addcategory(categoryDto);
      return "redirect:/admin/categoryList";
     }
-
-
     @GetMapping("/categorySearch")
     public String searchCategory(@RequestParam ("name")String name, Model model)
     {

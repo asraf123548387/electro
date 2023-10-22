@@ -18,7 +18,7 @@
     <!-- Slick -->
     <link th:href="@{/css/slick.css}" rel="stylesheet" />
     <link th:href="@{/css/slick-theme.css}" rel="stylesheet" />
-
+    <link th:href="@{/css/banner.css}" rel="stylesheet" />
     <!-- nouislider -->
     <link th:href="@{/css/nouislider.min.css}" rel="stylesheet" />
 
@@ -30,8 +30,6 @@
     <!-- Custom stylesheet -->
     <link th:href="@{/css/style.css}" rel="stylesheet" />
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script th:src="@{/js/html5shiv.min.js}"></script>
     <script th:src="@{/js/respond.min.js}"></script>
@@ -44,11 +42,7 @@ color:white;
 <body>
 <!-- HEADER -->
 <header>
-    <!-- TOP HEADER -->
 
-    <!-- /TOP HEADER -->
-
-    <!-- MAIN HEADER -->
     <div id="header" th:fragment="mainHeader">
         <!-- container -->
         <div class="container">
@@ -88,13 +82,14 @@ color:white;
                         <div>
                             <ul class="header-links pull-right" >
                                 <li sec:authorize="isAuthenticated()"><a th:href="@{/user/seeWishList}"><i class="fa fa-heart" style="color:white;"></i></a></li>
-                                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><i class="fa fa-sign-out-alt" style="color:white;"></i> </a></li>
+
                                 <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/home}"> <i class="fa fa-table me-2" style="color:white;">
                                 </i></a></li>
                                 <li sec:authorize="hasRole('USER')"><a th:href="@{/user/profile}"><i class="fa fa-user me-2" style="color:white;"></i></a></li>
 
                                 <li><a th:href="@{/login}" sec:authorize="!isAuthenticated()" ><i class="fa fa-user me-2" style="color:white;"></i></a></li>
                                 <li><a th:href="@{/user/cart}"><i class="fa fa-cart-arrow-down me-2" style="color:white;"></i></a></li>
+                                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><i class="fa fa-sign-out-alt" style="color:white;"></i> </a></li>
                             </ul>
 
 
@@ -126,7 +121,7 @@ color:white;
             <ul class="main-nav nav navbar-nav">
                 <li class="active"><a href="/">Home</a></li>
 
-                <li><a href="/laptops">Laptops</a></li>
+<!--                <li><a href="/laptops">Laptops</a></li>-->
             </ul>
             <!-- /NAV -->
         </div>
@@ -144,53 +139,28 @@ color:white;
         <!-- row -->
         <div class="row">
             <!-- shop -->
-            <div class="col-md-4 col-xs-6">
+            <div class="col-md-4 col-xs-6"  th:each="category : ${listCategory}">
                 <div class="shop">
+                    <div class="category-badge" th:if="${category.offers != null and not #lists.isEmpty(category.offers)}">
+                        <span th:text="${category.offers[0].discountAmount}"></span>% offer
+                    </div>
                     <div class="shop-img">
                         <img th:src="@{/img/shop01.png}" alt="">
                     </div>
                     <div class="shop-body">
-                        <h3>DELL<br/>Collection</h3>
-                        <a th:href="@{/user/dellCollection}" class="cta-btn">Shop now </a>
+                        <h3 th:text="${category.name} + ' Collection'"></h3>
+                        <a th:href="@{'/user/' + ${category.name} + 'Collection/' + ${category.id}}" class="cta-btn">Shop now</a>
+
                     </div>
                 </div>
             </div>
             <!-- /shop -->
 
-            <!-- shop -->
-            <div class="col-md-4 col-xs-6">
-                <div class="shop">
-                    <div class="shop-img">
-                        <img th:src="@{/img/shop01.png}" alt="">
-                    </div>
-                    <div class="shop-body">
-                        <h3>SAMSUNG<br/>Collection</h3>
-                        <a th:href="@{/user/samsungCollection}" class="cta-btn">Shop now</a>
-                    </div>
-                </div>
-            </div>
-            <!-- /shop -->
-
-            <!-- shop -->
-            <div class="col-md-4 col-xs-6">
-                <div class="shop">
-                    <div class="shop-img">
-                        <img th:src="@{/img/shop01.png}" alt="">
-                    </div>
-                    <div class="shop-body">
-                        <h3>HP<br/>Collection</h3>
-                        <a th:href="@{/user/hpCollection}" class="cta-btn">Shop now </a>
-                    </div>
-                </div>
-            </div>
-            <!-- /shop -->
-        </div>
-        <!-- /row -->
+        </div><!-- /row -->
     </div>
     <!-- /container -->
 </div>
 <!-- /SECTION -->
-
 <!-- SECTION -->
 <div class="section" th:fragment="newProductsSection">
     <!-- container -->
@@ -221,23 +191,48 @@ color:white;
                         <div id="tab2" class="tab-pane active">
                             <div class="products-slick" data-nav="#slick-nav-1">
 
-                                    <div class="product"  th:each="product, iterStat : ${listProducts}" th:limit="4">
-                                        <a th:href="@{/user/productView(productId=${product.Id})}">
-                                            <div class="product-img">
-<!--                                       <img th:text="${product.imageName}" src="./img/product06.png" alt="">&ndash;&gt;-->
-                                                <img th:src="${product.imageName}" alt="Product Image">
+                                <div class="product" th:each="product, iterStat : ${listProducts}" th:limit="4">
+                                    <a th:href="@{/user/productView(productId=${product.id})}">
+                                        <div class="product-img" style="position: relative;">
+                                            <!-- Product Image -->
+                                            <img th:src="${product.imageName}" alt="Product Image">
+
+                                            <!-- Discount Badge -->
+                                            <div class="discount-badge" th:if="${product.offers != null and not #lists.isEmpty(product.offers)}"
+                                                 style="position: absolute; top: 0; right: 0; background-color: #FF0000; color: #FFFFFF; padding: 5px 10px; font-size: 12px;">
+                                                <span th:text="${product.offers[0].discountAmount}"></span>% OFF
                                             </div>
-                                          <div class="product-body">
-                                             <p class="product-category" th:text="${product.category.name}">Category</p>
-                                             <h3 class="product-name" th:text="${product.productName}" ><a href="#" >product name goes here</a></h3>
-                                             <h4>₹<span class="product-price" th:text="${product.price}">980.00</span></h4>
-                                          </div>
+                                        </div>
+                                        <div class="product-body">
+                                            <p class="product-category" th:text="${product.category.name}">Category</p>
+                                            <h3 class="product-name" th:text="${product.productName}">
+                                                <a href="#">product name goes here</a>
+                                            </h3>
+
+                                            <!-- Calculate the discounted price and display it -->
+                                            <span th:if="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <strike>
+                                                    <p>₹<span class="product-price" th:text="${product.price}">980.00</span></p>
+                                                </strike>
+                                              <h6>₹<span class="product-price" th:text="${product.price - (product.price * product.offers[0].discountAmount / 100)}"></span></h6>
+                                              </span>
+                                            <span th:unless="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <h6>₹<span class="product-price" th:text="${product.price}">980.00</span></h6>
+                                            </span>
+                                        </div>
+                                    </a>
+                                    <div class="add-to-cart">
+                                        <a th:href="@{/user/addToWishList(productId=${product.id})}">
+                                            <button class="add-to-cart-btn"><i class="fa fa-heart"></i>
+                                                add to wishlist
+                                            </button>
                                         </a>
-                                      <div class="add-to-cart">
-                                        <a th:href="@{/user/addToWishList(productId=${product.Id})}" > <button class="add-to-cart-btn"><i class="fa fa-heart"></i>
-                                              add to wishlist</button></a>
-                                      </div>
                                     </div>
+                                </div>
+
+
+
+
 
                             </div>
                         </div>
@@ -324,23 +319,47 @@ color:white;
                         <div id="tab1" class="tab-pane active">
                             <div class="products-slick" data-nav="#slick-nav-1">
                                 <!-- product -->
-                                <div class="product"  th:each="product, iterStat : ${listProducts}" th:limit="4">
-                                    <a th:href="@{/user/productView(productId=${product.Id})}">
-                                        <div class="product-img">
-                                            <!--                                       <img th:text="${product.imageName}" src="./img/product06.png" alt="">&ndash;&gt;-->
+                                <div class="product" th:each="product, iterStat : ${listProducts}" th:limit="4">
+                                    <a th:href="@{/user/productView(productId=${product.id})}">
+                                        <div class="product-img" style="position: relative;">
+                                            <!-- Product Image -->
                                             <img th:src="${product.imageName}" alt="Product Image">
+
+                                            <!-- Discount Badge -->
+                                            <div class="discount-badge" th:if="${product.offers != null and not #lists.isEmpty(product.offers)}"
+                                                 style="position: absolute; top: 0; right: 0; background-color: #FF0000; color: #FFFFFF; padding: 5px 10px; font-size: 12px;">
+                                                <span th:text="${product.offers[0].discountAmount}"></span>% OFF
+                                            </div>
                                         </div>
                                         <div class="product-body">
                                             <p class="product-category" th:text="${product.category.name}">Category</p>
-                                            <h3 class="product-name" th:text="${product.productName}" ><a href="#" >product name goes here</a></h3>
-                                            <h4>₹<span class="product-price" th:text="${product.price}">980.00</span></h4>
+                                            <h3 class="product-name" th:text="${product.productName}">
+                                                <a href="#">product name goes here</a>
+                                            </h3>
+
+                                            <!-- Calculate the discounted price and display it -->
+                                            <span th:if="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <strike>
+                                                    <p>₹<span class="product-price" th:text="${product.price}">980.00</span></p>
+                                                </strike>
+                                              <h6>₹<span class="product-price" th:text="${product.price - (product.price * product.offers[0].discountAmount / 100)}"></span></h6>
+                                              </span>
+                                            <span th:unless="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <h6>₹<span class="product-price" th:text="${product.price}">980.00</span></h6>
+                                            </span>
                                         </div>
                                     </a>
                                     <div class="add-to-cart">
-                                        <a th:href="@{/user/addToWishList(productId=${product.Id})}" > <button class="add-to-cart-btn"><i class="fa fa-heart"></i>
-                                            add to wishlist</button></a>
+                                        <a th:href="@{/user/addToWishList(productId=${product.id})}">
+                                            <button class="add-to-cart-btn"><i class="fa fa-heart"></i>
+                                                add to wishlist
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
+
+
+
                             </div>
 
                         </div>
@@ -374,84 +393,33 @@ color:white;
                 <div class="products-widget-slick" data-nav="#slick-nav-3">
                     <div>
                         <!-- product widget -->
-                        <div class="product-widget">
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
                             <div class="product-img">
-                                <img src="./img/product08.png" alt="">
+                                <img th:src="${product.imageName}" alt="">
                             </div>
                             <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
                             </div>
                         </div>
                         <!-- /product widget -->
 
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product01.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- /product widget -->
-
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product04.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- product widget -->
                     </div>
 
                     <div>
                         <!-- product widget -->
-                        <div class="product-widget">
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
                             <div class="product-img">
-                                <img src="./img/product06.png" alt="">
+                                <img th:src="${product.imageName}" alt="">
                             </div>
                             <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price"> 980.00 <del class="product-old-price">$990.00</del></h4>
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
                             </div>
                         </div>
-                        <!-- /product widget -->
 
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product01.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">rs 980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- /product widget -->
-
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product04.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- product widget -->
                     </div>
                 </div>
             </div>
@@ -467,84 +435,34 @@ color:white;
                 <div class="products-widget-slick" data-nav="#slick-nav-4">
                     <div>
                         <!-- product widget -->
-                        <div class="product-widget">
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
                             <div class="product-img">
-                                <img src="./img/product06.png" alt="">
+                                <img th:src="${product.imageName}" alt="">
                             </div>
                             <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
                             </div>
                         </div>
-                        <!-- /product widget -->
 
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product06.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- /product widget -->
-
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product01.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- product widget -->
                     </div>
 
                     <div>
                         <!-- product widget -->
-                        <div class="product-widget">
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
                             <div class="product-img">
-                                <img src="./img/product03.png" alt="">
+                                <img th:src="${product.imageName}" alt="">
                             </div>
                             <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
                             </div>
                         </div>
                         <!-- /product widget -->
 
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product04.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- /product widget -->
 
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product06.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- product widget -->
                     </div>
                 </div>
             </div>
@@ -562,83 +480,34 @@ color:white;
                 <div class="products-widget-slick" data-nav="#slick-nav-5">
                     <div>
                         <!-- product widget -->
-                        <div class="product-widget">
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
                             <div class="product-img">
-                                <img src="./img/product01.png" alt="">
+                                <img th:src="${product.imageName}" alt="">
                             </div>
                             <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
                             </div>
                         </div>
                         <!-- /product widget -->
 
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product08.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- /product widget -->
-
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product03.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- product widget -->
                     </div>
 
                     <div>
                         <!-- product widget -->
-                        <div class="product-widget">
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
                             <div class="product-img">
-                                <img src="./img/product06.png" alt="">
+                                <img th:src="${product.imageName}" alt="">
                             </div>
                             <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price"> 980.00 <del class="product-old-price">$990.00</del></h4>
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
                             </div>
                         </div>
                         <!-- /product widget -->
 
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product08.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">rs 980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                        <!-- /product widget -->
-
-                        <!-- product widget -->
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product06.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
                         <!-- product widget -->
                     </div>
                 </div>
@@ -650,24 +519,17 @@ color:white;
     <!-- /container -->
 </div>
 <!-- /SECTION -->
-
 <!-- jQuery Plugins -->
 <script th:src="@{/js/jquery.min.js}"></script>
-
 <!-- Include Bootstrap -->
 <script th:src="@{/js/bootstrap.min.js}"></script>
-
 <!-- Include Slick -->
 <script th:src="@{/js/slick.min.js}"></script>
-
 <!-- Include noUiSlider -->
 <script th:src="@{/js/nouislider.min.js}"></script>
-
 <!-- Include jQuery Zoom -->
 <script th:src="@{/js/jquery.zoom.min.js}"></script>
-
 <!-- Include your custom JavaScript file (main.js) -->
 <script th:src="@{/js/main.js}"></script>
-
 </body>
 </html>
