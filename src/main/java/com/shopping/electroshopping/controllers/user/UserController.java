@@ -100,6 +100,7 @@ public class UserController {
         return "/checkOut/checkOutAddUser";
 
     }
+
     @PostMapping("addUserAddressInCheckOut")
     public String addUserAddressFormSubmitINCheckOut(@ModelAttribute("userAddressDto") UserAddressDto userAddressDto)
     {

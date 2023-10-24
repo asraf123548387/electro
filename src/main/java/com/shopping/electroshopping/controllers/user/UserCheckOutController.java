@@ -31,7 +31,6 @@ public class UserCheckOutController {
    private CouponRepository couponRepository;
    @Autowired
    CartRepository cartRepository;
-
    @Autowired
    UserAddressRepository userAddressRepository;
    @Autowired
@@ -44,29 +43,29 @@ public class UserCheckOutController {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
       String email = authentication.getName();
       User user = userRepository.findByEmail(email);
-
+      Long userId = (user != null) ? user.getId() : null;
       List<UserAddress> addressList = user.getAddresses();
       if (!addressList.isEmpty()) {
          // 3. Set the first address as the default
          UserAddress defaultAddress = addressList.get(0);
          defaultAddress.setDefaultAddress(true);
-
          // 4. Set all other addresses as not default
          for (UserAddress address : addressList) {
             if (!address.equals(defaultAddress)) {
                address.setDefaultAddress(false);
             }
          }
-
          // 5. Save the changes to the database
          userAddressRepository.saveAll(addressList);
       }
-
       List<CartItems> cartItems = cartItemsRepository.findByCartUser(user);
-
       double totalPrice = cartItemsRepository.sumCartItemsPriceByUser(user);
       Cart userCart = cartRepository.findByUser(user);
-
+      if (cartItems.isEmpty()) {
+         // You can choose how to handle this, such as displaying a message or redirecting to another page
+         redirectAttributes.addFlashAttribute("error", "Your cart is empty please select a product!");
+         return "redirect:/user/addToCartOutOfStock"; // Redirect to a page indicating an empty cart
+      }
       for (CartItems cartItem : cartItems) {
          Product product = cartItem.getProduct();
          int quantityPurchased = cartItem.getQuantity();
@@ -77,9 +76,7 @@ public class UserCheckOutController {
             product.setStock(currentStockQuantity - quantityPurchased);
             productService.saveProduct(product);
          } else {
-            // Handle insufficient stock
-            // You can return an error message or handle it as needed
-            // For example, you can redirect to a page showing the error message.
+
             String errorMessage = "Insufficient stock for product: " + product.getProductName();
 
             redirectAttributes.addFlashAttribute("error", errorMessage);
@@ -90,7 +87,9 @@ public class UserCheckOutController {
 
       userCart.setTotal(totalPrice);
       cartRepository.save(userCart);
-
+      UserAddressDto userAddressDto = new UserAddressDto();
+      model.addAttribute("userAddressDto", userAddressDto);
+      model.addAttribute("user_id",userId);
       model.addAttribute("addresses", addressList);
       model.addAttribute("totalPrice", totalPrice);
       model.addAttribute("cartItems", cartItems);
@@ -98,17 +97,7 @@ public class UserCheckOutController {
       return "/checkOut/checkOut";
    }
 
-//@ModelAttribute("userAddressDto")
-//public UserAddressDto userAddressDto()
-//{
-//   return new UserAddressDto();
-//}
-//@PostMapping("addUserAddressInCheckOut")
-//   public String useraddressformincheckout(@ModelAttribute("userAddressDto") UserAddressDto userAddressDto)
-//{
-//   userService.addUserAddressInCheckOut(userAddressDto);
-//   return"redirect:/user/checkOut";
-//}
+
 
 
    @GetMapping("/editUserAddressInCheckOut/{id}")

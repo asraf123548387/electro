@@ -23,9 +23,16 @@
                         <div class="col"><b>Total:</b></div>
                         <div class="col d-flex justify-content-end"><b th:text="${totalPrice}">$847.95</b></div>
                     </div>
+                    <ul style="display:flex; list-style-type: none;">
+                        <li>
                     <a th:href="@{/user/showOrder}">
                         <button class="btn btn-primary d-flex mx-auto">Track your order</button>
-                    </a>
+                    </a></li>
+                        <li style="margin-left: 45px;">
+                    <a th:href="@{/}">
+                        <button class="btn btn-primary d-flex mx-auto">Go To Shopping</button>
+                    </a></li>
+                    </ul>
                 </div>
             </div>
         </div>

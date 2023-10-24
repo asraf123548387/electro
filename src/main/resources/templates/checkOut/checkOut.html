@@ -25,31 +25,10 @@
     <script th:src="@{/js/html5shiv.min.js}"></script>
     <script th:src="@{/js/respond.min.js}"></script>
     <![endif]-->
-    <script>
-    function checkSelectedAddress() {
-    const addressCheckboxes = document.querySelectorAll('.address-checkbox');
-    let selectedAddressId = null;
 
-    addressCheckboxes.forEach((checkbox) => {
-    if (checkbox.checked) {
-    selectedAddressId = checkbox.getAttribute('data-id');
-    }
-    });
+    <script th:src="@{/js/notselectaddress.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/modalincheckout.css}">
 
-    if (selectedAddressId) {
-    // An address is selected, and you have the selected address ID.
-    // You can use this ID to identify the selected address.
-    console.log('Selected Address ID:', selectedAddressId);
-    // Now, you can use this ID for further processing, such as submitting it to the server.
-    // You can also redirect the user to the order placement page.
-    window.location.href = "/user/orderPlaced";
-    } else {
-    // No address is selected, display an error message.
-    const addressError = document.getElementById('address-error');
-    addressError.textContent = 'Please select a delivery address.';
-    }
-    }
-</script>
 </head>
 <body>
 <!-- HEADER -->
@@ -119,8 +98,6 @@
     <!-- /container -->
 </div>
 <!-- /BREADCRUMB -->
-
-
 <!-- SECTION -->
 <div class="section">
     <!-- container -->
@@ -151,9 +128,10 @@
                             </li>
                         </ul>
 
-                        <a th:href="@{/user/addUserAddressInCheckOut}" class="add-address-link">
+                        <a href="#" class="add-address-link" onclick="openModal()">
                             <button class="black-button">Add New Address</button>
                         </a>
+
                     </div>
 
                     <div id="addressFormContainer">
@@ -247,6 +225,68 @@
 
     </div>
 </div>
+<div id="addressModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 class="text-center">User Address Form</h2>
+        <form th:action="@{/user/addUserAddressInCheckOut}" method="post" th:object="${userAddressDto}">
+            <input type="hidden" name="user_id" th:value="${user_id}" />
+
+            <div class="form-group">
+                <label for="street">Street Details</label>
+                <input type="text" class="form-control" id="street" th:field="*{streetDetails}">
+            </div>
+            <div class="form-group">
+                <label for="cityname">Mobile Number</label>
+                <input type="text" class="form-control" id="addressPhoneNumber" th:field="*{addressPhoneNumber}">
+            </div>
+            <div class="form-group">
+                <label for="cityname">CityName</label>
+                <input type="text" class="form-control" id="cityname" th:field="*{cityName}">
+            </div>
+
+
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" class="form-control" id="state" th:field="*{state}">
+            </div>
+
+            <div class="form-group">
+                <label for="postalCode">Postal Code</label>
+                <input type="text" class="form-control" id="postalCode" th:field="*{postalCode}" required>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- /REFERRAL CARD -->
+
+
+<script>// Get the modal element
+var modal = document.getElementById("addressModal");
+
+// Function to open the modal
+function openModal() {
+    modal.style.display = "block";
+}
+
+// Function to close the modal
+function closeModal() {
+    modal.style.display = "none";
+}
+
+// Close the modal if the user clicks outside of it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
 
 </body>
 
