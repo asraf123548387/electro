@@ -6,10 +6,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ashraf
       MYSQL_DATABASE: electro
+      MYSQL_PORT: 3306
     ports:
       - 3307:3306
-    networks:
-      - networkmysql
+    volumes:
+      - sql_data:/var/lib/mysql
 
   spring-app:
     build: .
@@ -24,14 +25,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: ashraf
     depends_on:
       - mysql
-    networks:
-      - networkmysql
-    volumes:
-      - app-data:/app/mydata  # Mount a volume for your Spring Boot application data
-
-networks:
-  networkmysql:
-    driver: bridge
 
 volumes:
-  app-data:
+  sql_data:
