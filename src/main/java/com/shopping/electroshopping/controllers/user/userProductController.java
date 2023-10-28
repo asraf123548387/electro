@@ -41,7 +41,7 @@ public class userProductController {
         model.addAttribute("discountPrice",discountedPrice);
 
         // Return the product detail view template
-        return "/product/productDetailView";
+        return "productDetailView";
     }
 
 
@@ -59,7 +59,7 @@ public class userProductController {
         List<Category> categories=categoryRepository.findAll();
 //        model.addAttribute("listProducts",productList);
         model.addAttribute("categoryList",categories);
-        return "/product/dellCollection";
+        return "dellCollection";
     }
     @GetMapping("/SAMSUNGCollection/{id}")
     public String samsungCollection(@PathVariable Long id, Model model)
@@ -88,7 +88,7 @@ public class userProductController {
         List<Category> categories=categoryRepository.findAll();
         model.addAttribute("categoryList",categories);
         model.addAttribute("categoryDiscount", categoryDiscount);
-        return "/product/samsungCollection";
+        return "samsungCollection";
     }
     @GetMapping("/HPCollection/{id}")
     public String hpCollection(@PathVariable Long id, Model model)
@@ -103,7 +103,7 @@ public class userProductController {
         List<Category> categories=categoryRepository.findAll();
 //        model.addAttribute("listProducts",productList);
         model.addAttribute("categoryList",categories);
-        return "/product/hpCollection";
+        return "hpCollection";
     }
 
     @GetMapping("/productSearch")

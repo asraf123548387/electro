@@ -48,7 +48,7 @@ public class userRazorpayController {
             // Handle exceptions here
             e.printStackTrace();
             model.addAttribute("error", "Failed to create Razorpay order.");
-            return "/payment/paymentForm"; // Return to the payment form with an error message
+            return "paymentForm"; // Return to the payment form with an error message
         }
     }
     // Add more methods to handle Razorpay payment callbacks and verification

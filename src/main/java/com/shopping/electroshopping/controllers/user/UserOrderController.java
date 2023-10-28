@@ -98,7 +98,7 @@ public class UserOrderController {
 //    model.addAttribute("orderid",orders);
 
 
-    return "/order/plcedOrder";
+    return "plcedOrder";
 
 
 }
@@ -154,7 +154,7 @@ public class UserOrderController {
 //    model.addAttribute("orderid",orders);
 
 
-        return "/order/plcedOrder";
+        return "plcedOrder";
 
 
     }
@@ -168,9 +168,9 @@ public class UserOrderController {
     List<Order> orderList = orderRepository.findByUserEmail(email);
     Cart userCart = cartRepository.findByUser(user);
     double newtotal=userCart.getTotal();
-model.addAttribute("total",newtotal);
+    model.addAttribute("total",newtotal);
     model.addAttribute("orderList", orderList);
-    return "/order/showOrder";
+    return "showOrder";
 
 }
 @GetMapping("cancelOrder/{id}")

@@ -90,7 +90,7 @@ public class UserCartController {
             // Retrieve and add the product to the model
             model.addAttribute("product", product);
 
-            return "/cart/cart";
+            return "cart";
         } else {
             // Handle the case where the user is null (e.g., redirect to a login page or display an error message).
             return "redirect:/login"; // Example: Redirect to the login page
@@ -109,7 +109,7 @@ public class UserCartController {
         // Pass the cart items to the Thymeleaf template
         model.addAttribute("totalPrice", newtotal);
         model.addAttribute("cartItems", cartItems);
-        return "/cart/cart";
+        return "cart";
 
     }
     @GetMapping("/cart")
@@ -124,7 +124,7 @@ public class UserCartController {
         model.addAttribute("totalPrice", totalPrice);
         // Pass the cart items to the Thymeleaf template
         model.addAttribute("cartItems", cartItems);
-        return "/cart/cart";
+        return "cart";
     }
 
     @GetMapping("/deleteCartItems/{id}")

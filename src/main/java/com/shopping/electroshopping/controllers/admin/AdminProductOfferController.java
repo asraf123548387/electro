@@ -36,7 +36,7 @@ public class AdminProductOfferController {
         model.addAttribute("productOffer",productOffers);
 
         model.addAttribute("categoryOffer",categoryOfferList);
-        return"/productOffer/productOfferList";
+        return"productOfferList";
     }
     @ModelAttribute("productOffer")
     public ProductOffer productOffer()
@@ -49,7 +49,7 @@ public class AdminProductOfferController {
     {
         List<Product> productList=productRepository.findAll();
         model.addAttribute("productList",productRepository.findAll());
-        return"/productOffer/addProductOffer";
+        return"addProductOffer";
     }
     @PostMapping("/addProductOffer")
     public String addProductForm(@ModelAttribute("productOffer")ProductOffer productOffer)
@@ -65,7 +65,7 @@ public class AdminProductOfferController {
         ProductOffer productOffer=productOfferRepository.findById(productOfferId).orElseThrow(()->new IllegalArgumentException("in valid product Id: "+productOfferId));
         model.addAttribute("productOffer",productOffer);
         model.addAttribute("productOfferId",productOfferId);
-        return "/productOffer/updateProductOffer";
+        return "updateProductOffer";
     }
     @PostMapping("/updateProductOffer/{id}")
     public String updateProductOffer(@PathVariable("id") Long id,@ModelAttribute("productOffer") ProductOffer productOffer)

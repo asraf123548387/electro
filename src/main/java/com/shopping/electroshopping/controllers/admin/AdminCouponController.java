@@ -24,12 +24,12 @@ public class AdminCouponController {
 {
     List<Coupon> couponList=couponRepository.findAll();
     model.addAttribute("coupon",couponList);
-    return"/coupon/couponList";
+    return"couponList";
 }
 @GetMapping("/addCoupon")
 public String addCoupon()
 {
-    return "/coupon/addCoupon";
+    return "addCoupon";
 }
     @ModelAttribute("coupon")
     public CouponDto couponDto() {
@@ -49,7 +49,7 @@ public String addCoupon()
         List<Coupon> couponList=couponService.getCodeByName(code);
         model.addAttribute("coupon",couponList);
 
-        return "/coupon/couponList";
+        return "couponList";
     }
 
 
@@ -65,7 +65,7 @@ public String addCoupon()
         Coupon coupon=couponRepository.findById(id).orElseThrow(()->new IllegalArgumentException("in valid product Id: "+id));
         model.addAttribute("coupon",coupon);
         model.addAttribute("id",id);
-        return "coupon/updateCoupon";
+        return "updateCoupon";
     }
     @PostMapping("updateCoupon/{id}")
     public String updateCouponForm(@PathVariable("id") Long id,@ModelAttribute("coupon") CouponDto couponDto)
@@ -73,9 +73,6 @@ public String addCoupon()
         couponService.editCoupon(id,couponDto);
         return "redirect:/admin/couponList";
     }
-
-
-
 
 
 

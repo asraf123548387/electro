@@ -62,7 +62,7 @@ public class UserWishlistController {
         User user = userRepository.findByEmail(email);
         List<WishListItem> wishListItems=wishListRepository.findByWishListItemUser(user);
         model.addAttribute("wishListItem",wishListItems);
-        return "wishlist/wishlist";
+        return "wishlist";
     }
     @GetMapping("/deleteWishList/{id}")
     public String deleteWishList(@PathVariable("id") Long id)

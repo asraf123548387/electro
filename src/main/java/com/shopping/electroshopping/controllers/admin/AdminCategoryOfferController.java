@@ -47,7 +47,7 @@ public CategoryOffer categoryOffer()
 {
     List<Category> categoryList=categoryRepository.findAll();
     model.addAttribute("categoryList",categoryList);
-    return "categoryOffer/addCategoryOffer";
+    return "addCategoryOffer";
 }
     @PostMapping("/addCategoryOffer")
     public String addCategoryForm(@ModelAttribute("categoryOffer")CategoryOffer categoryOffer)
@@ -69,7 +69,7 @@ public CategoryOffer categoryOffer()
         CategoryOffer categoryOffer=categoryOfferRepository.findById(id).orElseThrow(()->new IllegalArgumentException("in valid product Id: "+id));
         model.addAttribute("categoryOffer",categoryOffer);
         model.addAttribute("id",id);
-        return "/categoryOffer/updateCategoryOffer";
+        return "updateCategoryOffer";
     }
     @PostMapping("/updateCategoryOffer/{id}")
     public String updateProductOffers(@PathVariable("id") long id,@ModelAttribute("categoryOffer") CategoryOffer categoryOffer)

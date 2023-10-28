@@ -44,7 +44,7 @@ public class AdminProductController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productsPage.getTotalPages());
 
-        return "product/listProducts";
+        return "listProducts";
     }
 
     @ModelAttribute("product")
@@ -56,7 +56,7 @@ public class AdminProductController {
     public String addProductsForm(Model model)
     {
         model.addAttribute("categories",categoryRepository.findAll());
-        return "/product/addProducts";
+        return "addProducts";
     }
     @PostMapping("/addProducts")
     public String addProductsToDatabase(@ModelAttribute("product")ProductDto productDto )
@@ -84,7 +84,7 @@ public class AdminProductController {
         model.addAttribute("pro",productId);
         model.addAttribute("categories",categoryRepository.findAll());
 
-        return "/product/updateProduct";
+        return "updateProduct";
     }
     @PostMapping("/updateProduct/{id}")
     public String updateProduct(@PathVariable("id") Long productId,@ModelAttribute("product") ProductDto productDto)
@@ -97,6 +97,6 @@ public class AdminProductController {
     {
         List<Product> list=productService.getProductByName(productName);
         model.addAttribute("listProduct",list);
-        return "/product/listProducts";
+        return "listProducts";
     }
 }

@@ -58,7 +58,7 @@ public class UserController {
 
 
 
-        return "/user/userProfile";
+        return "userProfile";
     }
 
     @GetMapping("addUserAddress")
@@ -70,7 +70,7 @@ public class UserController {
 
         model.addAttribute("user_id", userId);
 
-        return "/user/addUserAddress";
+        return "addUserAddress";
 
     }
     @ModelAttribute("userAddressDto")
@@ -97,7 +97,7 @@ public class UserController {
 
         model.addAttribute("user_id", userId);
 
-        return "/checkOut/checkOutAddUser";
+        return "checkOutAddUser";
 
     }
 
@@ -118,7 +118,7 @@ public class UserController {
 
 
 
-        return "user/updateProfile";
+        return "updateProfile";
     }
     @ModelAttribute("user")
     public UserSignUpDto userSignUpDto()
@@ -139,7 +139,7 @@ public class UserController {
         User user=userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + userId));
         model.addAttribute("user", user);
         model.addAttribute("userId",userId);
-        return "/user/changePassword";
+        return "changePassword";
     }
 
     @PostMapping("/changePassword/{user_id}")

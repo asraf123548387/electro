@@ -1,0 +1,35 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysqlcontainer
+    environment:
+      MYSQL_ROOT_PASSWORD: ashraf
+      MYSQL_DATABASE: electro
+    ports:
+      - "3307:3306"
+    networks:
+      - networkmysql
+
+  spring-app:
+    build: .
+    restart: always
+    image: electroimage
+    container_name: electrocontainer
+    ports:
+      - "8090:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/electro
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ashraf
+    networks:
+      - networkmysql
+    volumes:
+      - app-data:/app/mydata  # Mount a volume for your Spring Boot application data
+
+networks:
+  networkmysql:
+    driver: bridge
+
+volumes:
+  app-data:

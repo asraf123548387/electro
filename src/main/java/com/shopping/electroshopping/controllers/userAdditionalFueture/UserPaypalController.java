@@ -51,7 +51,7 @@ public class UserPaypalController {
             model.addAttribute("amount", total);
             model.addAttribute("cartItems", cartItems);
         }
-            return "/payment/payment";
+            return "payment";
 
     }
 @PostMapping("/pay")

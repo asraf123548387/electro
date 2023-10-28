@@ -30,7 +30,7 @@ public class AdminCategoryController {
     {
         List<Category> categories=categoryRepository.findAll();
         model.addAttribute("listcategory",categories);
-        return "/category/listcategory";
+        return "listCategory";
     }
     @GetMapping("/deleteCategory/{id}")
     public String deleteCategory(@PathVariable(value = "id") long id)
@@ -45,7 +45,7 @@ public class AdminCategoryController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + CategoryId));
         model.addAttribute("category",category);
         model.addAttribute("categoryId",CategoryId);
-        return "/category/updateCategory";
+        return "updateCategory";
     }
 
     @PostMapping("/updateCategory/{id}")
@@ -65,7 +65,7 @@ public class AdminCategoryController {
     @GetMapping("/addCategory")
     public String showAddCategoryPage()
     {
-        return "/category/addCategory";
+        return "addCategory";
     }
     @PostMapping("/addCategoryForm")
     public String addingCategoryIntoDatabase(@ModelAttribute("category")CategoryDto categoryDto)
@@ -78,7 +78,7 @@ public class AdminCategoryController {
     {
         List<Category> list=categoryService.getCategoryByName(name);
         model.addAttribute("listcategory",list);
-        return "/category/listcategory";
+        return "listCategory";
     }
 
 

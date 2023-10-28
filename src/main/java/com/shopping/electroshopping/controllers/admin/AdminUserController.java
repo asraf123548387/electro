@@ -71,7 +71,7 @@ public class AdminUserController {
         int pageSize = 10; // Number of items per page
         Page<User> usersPage = customerRepository.findAll(PageRequest.of(page, pageSize));
         model.addAttribute("listUsers", usersPage);
-        return "user/listusers";
+        return "listusers";
     }
 
 
@@ -80,7 +80,7 @@ public class AdminUserController {
     {
         List<User> list=userService.getCustomerByName(email);
          model.addAttribute("listUsers",list);
-        return "user/listusers";
+        return "listusers";
     }
     @GetMapping ("blockUser/{id}")
     public String blockUser(@PathVariable Long id)

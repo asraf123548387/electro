@@ -29,7 +29,7 @@ public class UserOtpController {
     private UserServiceImpl userService;
     @GetMapping("/verify")
     public String showVerificationForm() {
-        return "/otp/verification";
+        return "verification";
     }
     @PostMapping("/verify")
     public String processVerification(
@@ -52,7 +52,7 @@ public class UserOtpController {
 
         // OTP incorrect, show error message
         model.addAttribute("error", true);
-        return "/otp/verification";
+        return "verification";
     }
 
 
@@ -61,7 +61,7 @@ public class UserOtpController {
     @GetMapping("forgotPassword")
     public String forgotPassword()
     {
-      return "/otp/forgotPassword";
+      return "forgotPassword";
     }
     @PostMapping("/forgotPassword")
     public String processForgotPassword(@RequestParam("email") String email, Model model)
@@ -76,7 +76,7 @@ public class UserOtpController {
         String emailss = user.getEmail();
         sendOTPEmail(emailss, otp);
 
-      return "/otp/forgotPasswordVerify";
+      return "forgotPasswordVerify";
 
 
     }
@@ -125,7 +125,7 @@ public class UserOtpController {
         } else {
             // Invalid OTP or other error occurred
             model.addAttribute("error", "Invalid OTP. Please try again.");
-            return "/otp/forgotPasswordVerify"; // Return to the verification page with an error message
+            return "forgotPasswordVerify"; // Return to the verification page with an error message
         }
     }
 

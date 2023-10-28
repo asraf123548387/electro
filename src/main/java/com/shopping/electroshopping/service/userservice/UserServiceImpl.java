@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,8 +38,13 @@ public class UserServiceImpl implements UserService {
     public User save(UserSignUpDto signUpDto) {
         User customer=new User(signUpDto.getUserName(),signUpDto.getEmail(),
                 passwordEncoder.encode(signUpDto.getPassword()),signUpDto.getPhoneNumber(),
-                signUpDto.getOtp(),Arrays.asList(new Role("ROLE_USER")));
+                signUpDto.getOtp(), new ArrayList<>());
 //customer.setReferralCode(generateCode());
+        if (userRepository.count() == 0) {
+            customer.getRoles().add(new Role("ROLE_ADMIN")); // Assign admin role for the first user
+        } else {
+            customer.getRoles().add(new Role("ROLE_USER")); // Assign user role for other users
+        }
         return userRepository.save(customer);
     }
 

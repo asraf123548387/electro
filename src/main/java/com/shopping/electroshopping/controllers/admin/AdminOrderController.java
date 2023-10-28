@@ -33,7 +33,7 @@ public class AdminOrderController {
         List<Order> orders=orderRepository.findAll();
         model.addAttribute("orderList",orders);
 
-        return "order/orderList";
+        return "orderList";
     }
     @GetMapping("/updateOrder/{id}")
     public String updateOrder(@PathVariable("id")Long orderId, Model model)
@@ -41,7 +41,7 @@ public class AdminOrderController {
         Order order=orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + orderId));
         model.addAttribute("order",order);
         model.addAttribute("orderId",orderId);
-        return "/order/updateOrderStatus";
+        return "updateOrderStatus";
     }
     @PostMapping("/updateOrder/{id}")
     public String updateStatus(@PathVariable("id") Long orderId, @ModelAttribute("order") Order orderdto, RedirectAttributes redirectAttributes)

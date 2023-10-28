@@ -94,7 +94,7 @@ public class UserCheckOutController {
       model.addAttribute("totalPrice", totalPrice);
       model.addAttribute("cartItems", cartItems);
 
-      return "/checkOut/checkOut";
+      return "checkOut";
    }
 
 
@@ -106,7 +106,7 @@ public class UserCheckOutController {
       UserAddress userAddress=userAddressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
       model.addAttribute("editAddressInCheckOut",userAddress);
       model.addAttribute("id",id);
-      return "checkOut/checkOutEditUser";
+      return "checkOutEditUser";
 
    }
    @ModelAttribute("editAddressInCheckOut")

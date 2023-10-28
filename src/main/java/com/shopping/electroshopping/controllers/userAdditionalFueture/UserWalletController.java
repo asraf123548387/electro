@@ -38,7 +38,7 @@ public class UserWalletController {
 
         double walletBalance = walletService.getCurrentWalletBalance();
         model.addAttribute("walletBalance", walletBalance);
-        return "/wallet/wallet";
+        return "wallet";
 
     }
     @GetMapping("useWallet")

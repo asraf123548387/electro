@@ -64,7 +64,7 @@ public class UserCouponController {
                 model.addAttribute("addresses", addressList);
                 model.addAttribute("totalPrice", totalPrice);
                 model.addAttribute("cartItems", cartItems);
-                return "/checkOut/checkOut"; // Return to the form with an error message
+                return "checkOut"; // Return to the form with an error message
             }
             String expirationDateStr = coupon.getExpirationDate();
             Date expirationDate = null;
@@ -83,7 +83,7 @@ public class UserCouponController {
             if (expirationDate != null && currentDate.after(expirationDate)) {
                 model.addAttribute("error", "Coupon has expired.");
                 // Other error handling or redirection logic if needed
-                return "/checkOut/checkOut";
+                return "checkOut";
             }
             double discountPercentage=coupon.getDiscountPercentage();
             double totalPrice = cartItemsRepository.sumCartItemsPriceByUser(user);
@@ -97,7 +97,7 @@ public class UserCouponController {
             model.addAttribute("totalPrice", newTotal);
             model.addAttribute("cartItems", cartItems);
 
-            return "/checkOut/checkOut";
+            return "checkOut";
         }
 
 
