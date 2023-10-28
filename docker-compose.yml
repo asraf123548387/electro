@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: ashraf
       MYSQL_DATABASE: electro
     ports:
-      - "3307:3306"
+      - 3307:3306
     networks:
       - networkmysql
 
@@ -17,11 +17,13 @@ services:
     image: electroimage
     container_name: electrocontainer
     ports:
-      - "8090:8080"
+      - 8090:8080
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/electro
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ashraf
+    depends_on:
+      - mysql
     networks:
       - networkmysql
     volumes:
