@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Electro - HTML Ecommerce Template</title>
+
+    <!-- Google font -->
+    <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,500,700}" rel="stylesheet" />
+
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- Slick -->
+    <link th:href="@{/css/slick.css}" rel="stylesheet" />
+    <link th:href="@{/css/slick-theme.css}" rel="stylesheet" />
+    <link th:href="@{/css/banner.css}" rel="stylesheet" />
+    <!-- nouislider -->
+    <link th:href="@{/css/nouislider.min.css}" rel="stylesheet" />
+
+    <!-- Font Awesome Icon -->
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css}" rel="stylesheet">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css}" rel="stylesheet">
+
+    <!-- Custom stylesheet -->
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
+    <!--[if lt IE 9]>
+    <script th:src="@{/js/html5shiv.min.js}"></script>
+    <script th:src="@{/js/respond.min.js}"></script>
+    <![endif]-->
+<style>.header-links pull-right{
+color:white;
+}
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<header>
+
+    <div id="header" th:fragment="mainHeader">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- LOGO -->
+                <div class="col-md-3">
+                    <div class="header-logo">
+                        <a href="#" class="logo">
+                            <img th:src="@{/img/logo.png}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <!-- /LOGO -->
+
+                <!-- SEARCH BAR -->
+                <div class="col-md-6">
+                    <div class="header-search">
+                        <form th:action="@{/user/productSearch}" method="get">
+
+                            <input class="input" type="text" name="productName" th:value="*{productName}" placeholder="Search here">
+                            <button type="submit" class="search-btn">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /SEARCH BAR -->
+
+                <!-- ACCOUNT -->
+                <div class="col-md-3 clearfix">
+                    <div class="header-ctn">
+                        <!-- Wishlist -->
+                        <div>
+                            <ul class="header-links pull-right" >
+                                <li sec:authorize="isAuthenticated()"><a th:href="@{/user/seeWishList}"><i class="fa fa-heart" style="color:white;"></i></a></li>
+
+                                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/home}"> <i class="fa fa-table me-2" style="color:white;">
+                                </i></a></li>
+                                <li sec:authorize="hasRole('USER')"><a th:href="@{/user/profile}"><i class="fa fa-user me-2" style="color:white;"></i></a></li>
+
+                                <li><a th:href="@{/login}" sec:authorize="!isAuthenticated()" ><i class="fa fa-user me-2" style="color:white;"></i></a></li>
+                                <li><a th:href="@{/user/cart}"><i class="fa fa-cart-arrow-down me-2" style="color:white;"></i></a></li>
+                                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><i class="fa fa-sign-out-alt" style="color:white;"></i> </a></li>
+                            </ul>
+
+
+                        </div>
+                        <!-- /Wishlist -->
+
+                    </div>
+                </div>
+                <!-- /ACCOUNT -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /MAIN HEADER -->
+
+</header>
+<!-- /HEADER -->
+
+
+<!-- NAVIGATION -->
+<!-- NAVIGATION -->
+<nav id="navigation" th:fragment="mainNavigation">
+    <!-- container -->
+    <div class="container">
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+
+<!--                <li><a href="/laptops">Laptops</a></li>-->
+            </ul>
+            <!-- /NAV -->
+        </div>
+        <!-- /responsive-nav -->
+    </div>
+    <!-- /container -->
+</nav>
+<!-- /NAVIGATION -->
+
+
+<!-- SECTION -->
+<div class="section" th:fragment="shopCollections">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- shop -->
+            <div class="col-md-4 col-xs-6"  th:each="category : ${listCategory}">
+                <div class="shop">
+                    <div class="category-badge" th:if="${category.offers != null and not #lists.isEmpty(category.offers)}">
+                        <span th:text="${category.offers[0].discountAmount}"></span>% offer
+                    </div>
+                    <div class="shop-img">
+                        <img th:src="@{/img/shop01.png}" alt="">
+                    </div>
+                    <div class="shop-body">
+                        <h3 th:text="${category.name} + ' Collection'"></h3>
+                        <a th:href="@{'/user/' + ${category.name} + 'Collection/' + ${category.id}}" class="cta-btn">Shop now</a>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /shop -->
+
+        </div><!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+<!-- SECTION -->
+<div class="section" th:fragment="newProductsSection">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <!-- section title -->
+            <div class="col-md-12">
+                <div class="section-title">
+                    <h3 class="title">New Products</h3>
+                    <div class="section-nav">
+                        <ul class="section-tab-nav tab-nav">
+                            <li><a data-toggle="tab" th:href="@{/user/samsungCollection}">SUMSUNG</a></li>
+                            <li><a data-toggle="tab" th:href="@{/user/hpCollection}">HP</a></li>
+                            <li><a data-toggle="tab"th:href="@{/user/dellCollection}">DELL</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /section title -->
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="products-tabs">
+                        <!-- tab -->
+                        <div id="tab2" class="tab-pane active">
+                            <div class="products-slick" data-nav="#slick-nav-1">
+
+                                <div class="product" th:each="product, iterStat : ${listProducts}" th:limit="4">
+                                    <a th:href="@{/user/productView(productId=${product.id})}">
+                                        <div class="product-img" style="position: relative;">
+                                            <!-- Product Image -->
+                                            <img th:src="${product.imageName}" alt="Product Image">
+
+                                            <!-- Discount Badge -->
+                                            <div class="discount-badge" th:if="${product.offers != null and not #lists.isEmpty(product.offers)}"
+                                                 style="position: absolute; top: 0; right: 0; background-color: #FF0000; color: #FFFFFF; padding: 5px 10px; font-size: 12px;">
+                                                <span th:text="${product.offers[0].discountAmount}"></span>% OFF
+                                            </div>
+                                        </div>
+                                        <div class="product-body">
+                                            <p class="product-category" th:text="${product.category.name}">Category</p>
+                                            <h3 class="product-name" th:text="${product.productName}">
+                                                <a href="#">product name goes here</a>
+                                            </h3>
+
+                                            <!-- Calculate the discounted price and display it -->
+                                            <span th:if="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <strike>
+                                                    <p>₹<span class="product-price" th:text="${product.price}">980.00</span></p>
+                                                </strike>
+                                              <h6>₹<span class="product-price" th:text="${product.price - (product.price * product.offers[0].discountAmount / 100)}"></span></h6>
+                                              </span>
+                                            <span th:unless="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <h6>₹<span class="product-price" th:text="${product.price}">980.00</span></h6>
+                                            </span>
+                                        </div>
+                                    </a>
+                                    <div class="add-to-cart">
+                                        <a th:href="@{/user/addToWishList(productId=${product.id})}">
+                                            <button class="add-to-cart-btn"><i class="fa fa-heart"></i>
+                                                add to wishlist
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                        <!-- /tab -->
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Products tab & slick -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+<div id="hot-deal" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hot-deal">
+                    <ul class="hot-deal-countdown">
+                        <li>
+                            <div>
+                                <h3>02</h3>
+                                <span>Days</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <h3>10</h3>
+                                <span>Hours</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <h3>34</h3>
+                                <span>Mins</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <h3>60</h3>
+                                <span>Secs</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <h2 class="text-uppercase">hot deal this week</h2>
+                    <p>Laptop With headphone</p>
+                    <a class="primary-btn cta-btn" href="#">Shop now</a>
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <!-- section title -->
+            <div class="col-md-12">
+                <div class="section-title">
+                    <h3 class="title">Top selling</h3>
+                    <div class="section-nav">
+                        <ul class="section-tab-nav tab-nav">
+                            <li class="active"><a data-toggle="tab" href="#tab2">Laptops</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /section title -->
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="products-tabs">
+                        <!-- tab -->
+                        <div id="tab1" class="tab-pane active">
+                            <div class="products-slick" data-nav="#slick-nav-1">
+                                <!-- product -->
+                                <div class="product" th:each="product, iterStat : ${listProducts}" th:limit="4">
+                                    <a th:href="@{/user/productView(productId=${product.id})}">
+                                        <div class="product-img" style="position: relative;">
+                                            <!-- Product Image -->
+                                            <img th:src="${product.imageName}" alt="Product Image">
+
+                                            <!-- Discount Badge -->
+                                            <div class="discount-badge" th:if="${product.offers != null and not #lists.isEmpty(product.offers)}"
+                                                 style="position: absolute; top: 0; right: 0; background-color: #FF0000; color: #FFFFFF; padding: 5px 10px; font-size: 12px;">
+                                                <span th:text="${product.offers[0].discountAmount}"></span>% OFF
+                                            </div>
+                                        </div>
+                                        <div class="product-body">
+                                            <p class="product-category" th:text="${product.category.name}">Category</p>
+                                            <h3 class="product-name" th:text="${product.productName}">
+                                                <a href="#">product name goes here</a>
+                                            </h3>
+
+                                            <!-- Calculate the discounted price and display it -->
+                                            <span th:if="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <strike>
+                                                    <p>₹<span class="product-price" th:text="${product.price}">980.00</span></p>
+                                                </strike>
+                                              <h6>₹<span class="product-price" th:text="${product.price - (product.price * product.offers[0].discountAmount / 100)}"></span></h6>
+                                              </span>
+                                            <span th:unless="${product.offers != null and not #lists.isEmpty(product.offers)}">
+                                              <h6>₹<span class="product-price" th:text="${product.price}">980.00</span></h6>
+                                            </span>
+                                        </div>
+                                    </a>
+                                    <div class="add-to-cart">
+                                        <a th:href="@{/user/addToWishList(productId=${product.id})}">
+                                            <button class="add-to-cart-btn"><i class="fa fa-heart"></i>
+                                                add to wishlist
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                        <!-- /tab -->
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Products tab & slick -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-4 col-xs-6">
+                <div class="section-title">
+                    <h4 class="title">Top selling</h4>
+                    <div class="section-nav">
+                        <div id="slick-nav-3" class="products-slick-nav"></div>
+                    </div>
+                </div>
+
+                <div class="products-widget-slick" data-nav="#slick-nav-3">
+                    <div>
+                        <!-- product widget -->
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
+                            <div class="product-img">
+                                <img th:src="${product.imageName}" alt="">
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
+                            </div>
+                        </div>
+                        <!-- /product widget -->
+
+                    </div>
+
+                    <div>
+                        <!-- product widget -->
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
+                            <div class="product-img">
+                                <img th:src="${product.imageName}" alt="">
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-xs-6">
+                <div class="section-title">
+                    <h4 class="title">Top selling</h4>
+                    <div class="section-nav">
+                        <div id="slick-nav-4" class="products-slick-nav"></div>
+                    </div>
+                </div>
+
+                <div class="products-widget-slick" data-nav="#slick-nav-4">
+                    <div>
+                        <!-- product widget -->
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
+                            <div class="product-img">
+                                <img th:src="${product.imageName}" alt="">
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <!-- product widget -->
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
+                            <div class="product-img">
+                                <img th:src="${product.imageName}" alt="">
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
+                            </div>
+                        </div>
+                        <!-- /product widget -->
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix visible-sm visible-xs"></div>
+
+            <div class="col-md-4 col-xs-6">
+                <div class="section-title">
+                    <h4 class="title">Top selling</h4>
+                    <div class="section-nav">
+                        <div id="slick-nav-5" class="products-slick-nav"></div>
+                    </div>
+                </div>
+
+                <div class="products-widget-slick" data-nav="#slick-nav-5">
+                    <div>
+                        <!-- product widget -->
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
+                            <div class="product-img">
+                                <img th:src="${product.imageName}" alt="">
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
+                            </div>
+                        </div>
+                        <!-- /product widget -->
+
+                    </div>
+
+                    <div>
+                        <!-- product widget -->
+                        <div class="product-widget"  th:each="product, iterStat : ${listProducts}" th:limit="3">
+                            <div class="product-img">
+                                <img th:src="${product.imageName}" alt="">
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category"  th:text="${product.category.name}">Category</p>
+                                <h3 class="product-name" th:text="${product.productName}"><a href="#">product name goes here</a></h3>
+                                <h4 class="product-price" th:text="${product.price}">$980.00 <del class="product-old-price">$990.00</del></h4>
+                            </div>
+                        </div>
+                        <!-- /product widget -->
+
+                        <!-- product widget -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+<!-- jQuery Plugins -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<!-- Include Bootstrap -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<!-- Include Slick -->
+<script th:src="@{/js/slick.min.js}"></script>
+<!-- Include noUiSlider -->
+<script th:src="@{/js/nouislider.min.js}"></script>
+<!-- Include jQuery Zoom -->
+<script th:src="@{/js/jquery.zoom.min.js}"></script>
+<!-- Include your custom JavaScript file (main.js) -->
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

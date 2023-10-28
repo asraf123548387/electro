@@ -1,0 +1,25 @@
+.offer-banner {
+    background-color: #ffcc00;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.offer-details {
+    text-align: center;
+}
+
+.offer-details h3 {
+    font-size: 24px;
+    font-weight: bold;
+}
+@media screen and (max-width: 768px) {
+   .offer-banner {
+       padding: 5px;
+   }
+
+   .offer-details h3 {
+       font-size: 18px;
+   }
+}

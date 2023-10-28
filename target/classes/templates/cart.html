@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Electro - HTML Ecommerce Template</title>
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+  <!-- Slick -->
+  <link type="text/css" rel="stylesheet" th:href="@{/css/slick.css}"/>
+  <link type="text/css" rel="stylesheet" th:href="@{/css/slick-theme.css}"/>
+  <!-- nouislider -->
+  <!-- Font Awesome Icon -->
+  <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/cart.css}">
+
+  <!-- Custom stlylesheet -->
+  <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}"/>
+
+  <!--[if lt IE 9]>
+  <script th:src="@{/js/html5shiv.min.js}"></script>
+  <script th:src="@{/js/respond.min.js}"></script>
+  <![endif]-->
+</head>
+
+<body>
+<!-- HEADER -->
+<div class="container px-3 my-5 clearfix " >
+  <!-- Shopping cart table -->
+  <div class="card">
+    <div class="card-header">
+      <h2>CART</h2>
+    </div>
+    <div th:if="${error}" class="error-message">
+      <p th:text="${error}"></p>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered m-0 " style="background-color:white;width: 100%;">
+          <thead>
+          <tr>
+            <!-- Set columns width -->
+            <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
+
+            <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
+            <th class="text-right py-3 px-4" style="width: 100px;"></th>
+            <th class="text-right py-3 px-4" style="width: 100px;">price</th>
+            <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i class="ino ion-md-trash"></i></a></th>
+          </tr>
+          </thead>
+          <tbody>
+
+              <tr th:each="cart : ${cartItems}">
+                <td class="p-4">
+                  <div class="media align-items-center">
+                    <img th:src="${cart.product.imageName}" class="d-block ui-w-40 ui-bordered mr-4" alt="">
+                    <div class="media-body">
+                      <a href="#" class="d-block text-dark" th:text="${cart.product.productName}">Product 1</a>
+                    </div>
+                  </div>
+                </td>
+                <form th:action="@{/user/updateCartItemQuantity}" method="post">
+                <td class="align-middle p-4">
+                  <select class="form-control" name="quantity">
+                    <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}" th:selected="${i == cart.quantity}">1</option>
+                  </select>
+                  <input type="hidden" name="cartItemId" th:value="${cart.cartItemId}" />
+                </td>
+                  <td class="text-center align-middle px-0">
+                    <!-- Submit the form to update quantity -->
+                    <button type="submit" class="btn btn-primary custom-btn">Update</button>
+                  </td>
+                </form>
+                <td class="text-right font-weight-semibold align-middle p-4" th:text="${cart.price * cart.quantity}">$115.1</td>
+                <td class="text-center align-middle px-0">
+                  <a th:href="@{/user/deleteCartItems/{id}(id=${cart.cartItemId})}" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove">×</a>
+                </td>
+              </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <!-- / Shopping cart table -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
+
+        <div class="d-flex">
+
+          <div class="text-right mt-4">
+            <label class="text-muted font-weight-normal m-0">Total price</label>
+            <div class="text-large"><strong  th:text="${'₹'+totalPrice}">$1164.65</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="float-right">
+        <a th:href="@{/}">
+          <button type="button" class="btn btn-lg btn-primary mt-2 custom-btn">go back</button>
+        </a>
+        <a th:href="@{/user/checkOut}">
+          <button type="button" class="btn btn-lg btn-primary mt-2 custom-btn">Continue</button>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

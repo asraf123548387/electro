@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Electro - HTML Ecommerce Template</title>
+    <!-- Google font -->
+    <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,500,700}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}">
+
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- Slick -->
+    <link th:href="@{/css/slick.css}" rel="stylesheet" />
+    <link th:href="@{/css/slick-theme.css}" rel="stylesheet" />
+
+    <!-- nouislider -->
+    <link th:href="@{/css/nouislider.min.css}" rel="stylesheet" />
+
+    <!-- Font Awesome Icon -->
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
+
+    <!-- Custom stylesheet -->
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+
+    <![endif]-->
+
+<style>/* Add this to your existing CSS or create a new CSS block */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto; /* Enable vertical scrolling when the content exceeds the modal's height */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+<!-- HEADER -->
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="breadcrumb-header">WELCOME<p sec:authentication="principal.username">user</p></h3>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<!--<li ></li>-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Sidebar Card -->
+            <div class="card text-center sidebar">
+                <div class="card-body">
+                    <img th:src="@{/img/user1.png}" class="rounded-circle" width="150">
+                    <div class="mt-3">
+                        <hr>
+                        <a th:href="@{/}">HOME</a>
+                        <hr>
+                        <a href="#" onclick="openModal()">ADD ADDRESS</a>
+
+                        <hr>
+                        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">LOGOUT</a>
+                        <hr>
+                        <a th:href="@{/user/updateProfile/{user_id}(user_id=${user_id})}">EDIT PROFILE</a>
+                        <hr>
+                        <a th:href="@{/user/changePassword/{user_id}(user_id=${user_id})}">CHANGE PASSWORD</a>
+                        <hr>
+                        <a th:href="@{/user/showOrder}">SHOW ORDER</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!-- User Information Card -->
+            <div class="card mb-3 content">
+                <h1 class="m-1 pt-3" style="color: black; margin-left: 15px;"> About</h1>
+                <hr>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4 style="color: black;"> User name</h4>
+                        </div>
+                        <div class="col-md-9 text-secondary">
+                            <h4 style="color: black;" th:text="${username}">Ahammed Ahraf k</h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4 style="color: black;">Email</h4>
+                        </div>
+                        <div class="col-md-9 text-secondary">
+                            <h4 style="color: black;" th:text="${email}">Abc@gmail</h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4 style="color: black;"> Phone</h4>
+                        </div>
+                        <div class="col-md-9 text-secondary">
+                            <h4 style="color: black;" th:text="${phone}">7994207281</h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <h4>Addresses</h4>
+                        <ul class="address-list">
+                            <li th:each="address, addressIndex : ${addresses}">
+                                <div class="address-item">
+                                    <div class="address-details">
+                                        <span th:text="${address.streetDetails}"></span>,
+                                        <span th:text="${address.cityName}"></span>,
+                                        <span th:text="${address.state}"></span>,
+                                        <span th:text="${address.postalCode}"></span>
+                                    </div>
+                                    <a th:href="@{/user/editUserAddressInCheckOut/{id}(id=${address.userAddressID})}" class="edit-link">Edit</a>
+                                    <a th:href="@{/user/deleteUserAddressInCheckOut/{id}(id=${address.userAddressID})}" class="delete-link">Delete</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Referral Code Card -->
+            <div class="card" style="margin-top:10px;">
+                <div class="card-header">
+                    <h3>Referral Code</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Your unique referral code:
+                        <span class="referral-code" th:text="${referralCode}">ABCD123</span>
+                    </p>
+                    <p class="card-text">
+                        Share this code with your friends and earn Rs.100!
+                    </p>
+                    <div class="share-buttons">
+                        <!-- Add social media sharing buttons here if desired -->
+                        <a href="#" class="btn btn-primary">Share on Facebook</a>
+                        <a href="#" class="btn btn-info">Share on Twitter</a>
+                        <a href="#" class="btn btn-success">Share via Email</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addressModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 class="text-center">User Address Form</h2>
+        <form th:action="@{/user/addUserAddress}" method="post" th:object="${userAddressDto}">
+            <input type="hidden" name="user_id" th:value="${user_id}" />
+
+            <div class="form-group">
+                <label for="street">Street Details</label>
+                <input type="text" class="form-control" id="street" th:field="*{streetDetails}">
+            </div>
+            <div class="form-group">
+                <label for="cityname">Mobile Number</label>
+                <input type="text" class="form-control" id="addressPhoneNumber" th:field="*{addressPhoneNumber}">
+            </div>
+            <div class="form-group">
+                <label for="cityname">CityName</label>
+                <input type="text" class="form-control" id="cityname" th:field="*{cityName}">
+            </div>
+
+
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" class="form-control" id="state" th:field="*{state}">
+            </div>
+
+            <div class="form-group">
+                <label for="postalCode">Postal Code</label>
+                <input type="text" class="form-control" id="postalCode" th:field="*{postalCode}" required>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- /REFERRAL CARD -->
+
+
+<script th:src="@{/js/addaddress.js}"></script>
+
+</body>
+</html>

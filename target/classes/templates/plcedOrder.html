@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Users List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="col d-flex"><span class="text-muted" id="orderno">order #546924</span></div>
+            <div class="gap">
+                <div class="col-2 d-flex mx-auto"></div>
+            </div>
+            <div class="title mx-auto">Thank you for your order!</div>
+            <div class="main"><span id="sub-title"></span>
+
+                <hr>
+                <div class="total">
+                    <div class="row">
+                        <div class="col"><b>Total:</b></div>
+                        <div class="col d-flex justify-content-end"><b th:text="${totalPrice}">$847.95</b></div>
+                    </div>
+                    <ul style="display:flex; list-style-type: none;">
+                        <li>
+                    <a th:href="@{/user/showOrder}">
+                        <button class="btn btn-primary d-flex mx-auto">Track your order</button>
+                    </a></li>
+                        <li style="margin-left: 45px;">
+                    <a th:href="@{/}">
+                        <button class="btn btn-primary d-flex mx-auto">Go To Shopping</button>
+                    </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
